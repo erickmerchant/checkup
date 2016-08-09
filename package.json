@@ -1,0 +1,27 @@
+{
+  "name": "@erickmerchant/checkup",
+  "version": "1.0.0",
+  "description": "Check multiple projects for various things.",
+  "bin": {
+    "checkup": "./index.js"
+  },
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tape 'test.js' | faucet",
+    "cover": "nyc --reporter=html npm test"
+  },
+  "keywords": [],
+  "author": "Erick Merchant <erickmerchant@gmail.com>",
+  "license": "ISC",
+  "dependencies": {
+    "sergeant": "^12.0.0",
+    "thenify": "^3.2.0"
+  },
+  "devDependencies": {
+    "faucet": "0.0.1",
+    "mockery": "^1.4.0",
+    "nyc": "^7.1.0",
+    "standard": "^7.0.0",
+    "tape": "^4.6.0"
+  }
+}
