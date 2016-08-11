@@ -14,6 +14,7 @@
   "author": "Erick Merchant <erickmerchant@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "david": "^8.0.0",
     "sergeant": "^12.0.0",
     "thenify": "^3.2.0"
   },
