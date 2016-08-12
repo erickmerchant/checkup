@@ -9,14 +9,12 @@ const david = require('david')
 const thenify = require('thenify')
 const readdir = thenify(fs.readdir)
 const getUpdatedDependencies = thenify(david.getUpdatedDependencies)
-const npm = {progress: false}
 
 command.describe('')
 .option('unstable', 'use unstable')
 .action(function (args) {
   const stable = !args.get('unstable')
   const dir = process.cwd()
-  const results = {}
 
   return readdir(dir).then(function (files) {
     return Promise.all(files.map(function (file) {
@@ -26,32 +24,43 @@ command.describe('')
         fs.exists(packagePath, function (exists) {
           if (exists) {
             const manifest = require(packagePath)
-            const name = manifest.name || 'unnamed'
+            const name = manifest.name
 
-            results[name] = {}
+            let promise = Promise.resolve([])
 
-            Promise.all(
-              [{stable, npm}, {dev: true, stable, npm}].map(function (options) {
-                return getUpdatedDependencies(manifest, options)
-                .then(function (res) {
-                  Object.assign(results[name], res)
+            ;[{stable, npm: {progress: false}}, {dev: true, stable, npm: {progress: false}}].forEach(function (options) {
+              promise = promise.then(function (results) {
+                return getUpdatedDependencies(manifest, options).then(function (current) {
+                  Object.keys(current).forEach(function (name) {
+                    results.push(name)
+                  })
+
+                  return Promise.resolve(results)
                 })
               })
-            )
-            .then(resolve, reject)
+            })
+
+            promise.then(function (results) {
+              resolve({name, results})
+            })
+            .catch(reject)
           } else {
-            resolve()
+            resolve(null)
           }
         })
       })
     }))
   })
-  .then(function () {
-    Object.keys(results).forEach(function (name) {
-      if (Object.keys(results[name]).length) {
-        console.log(chalk.bold(name))
+  .then(function (results) {
+    results.filter((v) => !!v).forEach(function (result) {
+      if (result.results.length) {
+        console.log(chalk.bold(chalk.red('\u2718 ') + result.name))
 
-        console.log(results[name])
+        result.results.forEach(function (dep) {
+          console.log('  - ' + chalk.gray(dep))
+        })
+      } else {
+        console.log(chalk.bold(chalk.green('\u2714 ') + result.name))
       }
     })
   })
