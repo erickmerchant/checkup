@@ -17,50 +17,36 @@ command.describe('')
   const dir = process.cwd()
 
   return readdir(dir).then(function (files) {
-    return Promise.all(files.map(function (file) {
-      const packagePath = path.join(dir, file, 'package.json')
+    return Promise.all(files.filter((file) => !file.startsWith('.')).map(function (file) {
+      try {
+        const packagePath = path.join(dir, file, 'package.json')
+        const manifest = require(packagePath)
 
-      return new Promise(function (resolve, reject) {
-        fs.exists(packagePath, function (exists) {
-          if (exists) {
-            const manifest = require(packagePath)
-            const name = manifest.name
-
-            let promise = Promise.resolve([])
-
-            ;[{stable, npm: {progress: false}}, {dev: true, stable, npm: {progress: false}}].forEach(function (options) {
-              promise = promise.then(function (results) {
-                return getUpdatedDependencies(manifest, options).then(function (current) {
-                  Object.keys(current).forEach(function (name) {
-                    results.push(name)
-                  })
-
-                  return Promise.resolve(results)
-                })
-              })
-            })
-
-            promise.then(function (results) {
-              resolve({name, results})
-            })
-            .catch(reject)
-          } else {
-            resolve(null)
-          }
+        return Promise.resolve([])
+        .then(checkDependencies(manifest, {stable}))
+        .then(checkDependencies(manifest, {dev: true, stable}))
+        .then(function (results) {
+          return {name: manifest.name, results}
         })
-      })
+      } catch (e) {
+        return Promise.resolve({name: file})
+      }
     }))
   })
   .then(function (results) {
-    results.filter((v) => !!v).forEach(function (result) {
-      if (result.results.length) {
-        console.log(chalk.bold(chalk.red('\u2718 ') + result.name))
+    results.forEach(function (result) {
+      if (result.results != null) {
+        if (result.results.length) {
+          console.log(chalk.bold(chalk.red('\u2718 ') + result.name))
 
-        result.results.forEach(function (dep) {
-          console.log('  - ' + chalk.gray(dep))
-        })
+          result.results.forEach(function (dep) {
+            console.log(chalk.gray('  - ' + dep))
+          })
+        } else {
+          console.log(chalk.bold(chalk.green('\u2714 ') + result.name))
+        }
       } else {
-        console.log(chalk.bold(chalk.green('\u2714 ') + result.name))
+        console.log(chalk.bold(chalk.gray('\u2718 ') + result.name))
       }
     })
   })
@@ -69,3 +55,17 @@ command.describe('')
 command.run().catch(function (err) {
   console.error(chalk.red(err.message))
 })
+
+function checkDependencies (manifest, options) {
+  options = Object.assign(options, {npm: {progress: false}})
+
+  return function (results) {
+    return getUpdatedDependencies(manifest, options).then(function (current) {
+      Object.keys(current).forEach(function (name) {
+        results.push(name)
+      })
+
+      return Promise.resolve(results)
+    })
+  }
+}
