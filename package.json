@@ -7,7 +7,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "standard && tape 'test.js' | faucet",
+    "test": "standard && tape 'test/**/*.js' | faucet",
     "cover": "nyc --reporter=html npm test"
   },
   "keywords": [],
