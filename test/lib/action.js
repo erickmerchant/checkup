@@ -1,8 +1,9 @@
 var test = require('tape')
 var mockery = require('mockery')
-require('../../lib/check-git-status')
 
-test('test lib/check-git-status', function (t) {
+test('test lib/action', function (t) {
+  require('../../lib/action')
+
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
