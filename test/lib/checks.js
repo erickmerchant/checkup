@@ -1,6 +1,5 @@
 var test = require('tape')
 var mockery = require('mockery')
-require('../../lib/checks')
 
 test('test lib/checks', function (t) {
   mockery.enable({
@@ -9,9 +8,23 @@ test('test lib/checks', function (t) {
     warnOnUnregistered: false
   })
 
+  mockery.registerMock('./check-git-status', function () {
+    return function (results) {
+      return Promise.resolve(results)
+    }
+  })
+
+  mockery.registerMock('./check-dependencies', function () {
+    return function (results) {
+      return Promise.resolve(results)
+    }
+  })
+
   t.plan(1)
 
-  t.ok(true)
+  require('../../lib/checks')('test', new Map()).then(function (results) {
+    t.deepEqual(results, [])
 
-  mockery.disable()
+    mockery.disable()
+  })
 })
