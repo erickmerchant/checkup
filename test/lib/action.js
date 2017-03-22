@@ -29,7 +29,7 @@ test('test lib/action - no results', function (t) {
 
   t.plan(1)
 
-  require('../../lib/action')(new Map()).then(function () {
+  require('../../lib/action')({}).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.gray('\u2718 ') + 'test')
     ])
@@ -65,7 +65,7 @@ test('test lib/action - zero length results', function (t) {
 
   t.plan(1)
 
-  require('../../lib/action')(new Map()).then(function () {
+  require('../../lib/action')({}).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.green('\u2714 ') + 'test')
     ])
@@ -101,7 +101,7 @@ test('test lib/action - non-zero length results', function (t) {
 
   t.plan(1)
 
-  require('../../lib/action')(new Map()).then(function () {
+  require('../../lib/action')({}).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.red('\u2718 ') + 'test'),
       chalk.gray('  - test')

@@ -22,7 +22,7 @@ test('test lib/checks', function (t) {
 
   t.plan(1)
 
-  require('../../lib/checks')('test', new Map()).then(function (results) {
+  require('../../lib/checks')('test', {}).then(function (results) {
     t.deepEqual(results, [])
 
     mockery.disable()

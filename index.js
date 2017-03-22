@@ -1,15 +1,12 @@
 #!/usr/bin/env node
-'use strict'
-
-const log = require('./lib/log')
 const action = require('./lib/action')
-const command = require('sergeant/command')()
-const chalk = require('chalk')
+const command = require('sergeant')
 
-command.describe('')
-.option('unstable', 'use unstable')
-.action(action)
+command('checkup', function ({option}) {
+  option('unstable', {
+    description: 'use unstable',
+    type: Boolean
+  })
 
-command.run().catch(function (err) {
-  log.error(chalk.red(err.message))
-})
+  return action
+})(process.argv.slice(2))
