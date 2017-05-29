@@ -1,5 +1,5 @@
-var test = require('tape')
-var mockery = require('mockery')
+const test = require('tape')
+const mockery = require('mockery')
 
 test('test lib/check-git-status - no results', function (t) {
   mockery.enable({

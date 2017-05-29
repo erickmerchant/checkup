@@ -1,6 +1,6 @@
-var test = require('tape')
-var mockery = require('mockery')
-var chalk = require('chalk')
+const test = require('tape')
+const mockery = require('mockery')
+const chalk = require('chalk')
 
 test('test lib/action - no results', function (t) {
   const logged = []

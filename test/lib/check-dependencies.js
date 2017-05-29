@@ -1,6 +1,6 @@
-var test = require('tape')
-var mockery = require('mockery')
-var path = require('path')
+const test = require('tape')
+const mockery = require('mockery')
+const path = require('path')
 
 test('test lib/check-dependencies - failed require', function (t) {
   mockery.enable({

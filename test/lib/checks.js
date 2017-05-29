@@ -1,5 +1,5 @@
-var test = require('tape')
-var mockery = require('mockery')
+const test = require('tape')
+const mockery = require('mockery')
 
 test('test lib/checks', function (t) {
   mockery.enable({
