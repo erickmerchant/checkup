@@ -20,7 +20,7 @@
   "dependencies": {
     "chalk": "^2.0.1",
     "david": "^11.0.0",
-    "sergeant": "^15.4.2",
+    "sergeant": "^15.4.4",
     "simple-git": "^1.73.0",
     "thenify": "^3.3.0"
   },
