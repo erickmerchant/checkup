@@ -1,6 +1,6 @@
 {
   "name": "@erickmerchant/checkup",
-  "version": "2.0.7",
+  "version": "2.0.8",
   "description": "Check multiple projects for various things.",
   "bin": {
     "checkup": "./index.js"
