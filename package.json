@@ -21,7 +21,7 @@
     "chalk": "^2.0.1",
     "david": "^11.0.0",
     "sergeant": "^15.4.8",
-    "simple-git": "^1.74.1",
+    "simple-git": "^1.75.0",
     "thenify": "^3.3.0"
   },
   "devDependencies": {
@@ -29,6 +29,6 @@
     "mockery": "^2.0.0",
     "nyc": "^11.1.0",
     "standard": "^10.0.0",
-    "tape": "^4.6.0"
+    "tape": "^4.8.0"
   }
 }
