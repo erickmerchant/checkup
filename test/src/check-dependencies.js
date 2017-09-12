@@ -2,7 +2,7 @@ const test = require('tape')
 const mockery = require('mockery')
 const path = require('path')
 
-test('test lib/check-dependencies - failed require', function (t) {
+test('test src/check-dependencies - failed require', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -15,7 +15,7 @@ test('test lib/check-dependencies - failed require', function (t) {
     }
   })
 
-  const checkDependencies = require('../../lib/check-dependencies')
+  const checkDependencies = require('../../src/check-dependencies')
 
   t.plan(1)
 
@@ -26,7 +26,7 @@ test('test lib/check-dependencies - failed require', function (t) {
   })
 })
 
-test('test lib/check-dependencies - no results', function (t) {
+test('test src/check-dependencies - no results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -41,7 +41,7 @@ test('test lib/check-dependencies - no results', function (t) {
 
   mockery.registerMock(path.join(process.cwd(), 'test', 'package.json'), {})
 
-  const checkDependencies = require('../../lib/check-dependencies')
+  const checkDependencies = require('../../src/check-dependencies')
 
   t.plan(1)
 
@@ -52,7 +52,7 @@ test('test lib/check-dependencies - no results', function (t) {
   })
 })
 
-test('test lib/check-dependencies - results', function (t) {
+test('test src/check-dependencies - results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -69,7 +69,7 @@ test('test lib/check-dependencies - results', function (t) {
 
   mockery.registerMock(path.join(process.cwd(), 'test', 'package.json'), {})
 
-  const checkDependencies = require('../../lib/check-dependencies')
+  const checkDependencies = require('../../src/check-dependencies')
 
   t.plan(1)
 

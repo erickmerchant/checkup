@@ -1,7 +1,7 @@
 const test = require('tape')
 const mockery = require('mockery')
 
-test('test lib/checks', function (t) {
+test('test src/checks', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -22,7 +22,7 @@ test('test lib/checks', function (t) {
 
   t.plan(1)
 
-  require('../../lib/checks')('test', {}).then(function (results) {
+  require('../../src/checks')('test', {}).then(function (results) {
     t.deepEqual(results, [])
 
     mockery.disable()

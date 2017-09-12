@@ -1,7 +1,7 @@
 const test = require('tape')
 const mockery = require('mockery')
 
-test('test lib/check-git-status - no results', function (t) {
+test('test src/check-git-status - no results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -32,7 +32,7 @@ test('test lib/check-git-status - no results', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkGitStatus = require('../../lib/check-git-status')
+  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
@@ -46,7 +46,7 @@ test('test lib/check-git-status - no results', function (t) {
   })
 })
 
-test('test lib/check-git-status - results', function (t) {
+test('test src/check-git-status - results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -77,7 +77,7 @@ test('test lib/check-git-status - results', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkGitStatus = require('../../lib/check-git-status')
+  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
@@ -91,7 +91,7 @@ test('test lib/check-git-status - results', function (t) {
   })
 })
 
-test('test lib/check-git-status - no .git', function (t) {
+test('test src/check-git-status - no .git', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -113,7 +113,7 @@ test('test lib/check-git-status - no .git', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkGitStatus = require('../../lib/check-git-status')
+  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
@@ -127,7 +127,7 @@ test('test lib/check-git-status - no .git', function (t) {
   })
 })
 
-test('test lib/check-git-status - error', function (t) {
+test('test src/check-git-status - error', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -149,7 +149,7 @@ test('test lib/check-git-status - error', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkGitStatus = require('../../lib/check-git-status')
+  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const action = require('./lib/action')
+const action = require('./src/action')
 const command = require('sergeant')
 
 command('checkup', function ({option}) {
