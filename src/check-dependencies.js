@@ -1,25 +1,40 @@
-const thenify = require('thenify')
 const path = require('path')
-const david = require('david')
-const getUpdatedDependencies = thenify(david.getUpdatedDependencies)
+const semver = require('semver')
+const thenify = require('thenify')
+const exec = thenify(require('child_process').exec)
 
-module.exports = function (file, options) {
+module.exports = (file) => {
   const dir = process.cwd()
   const packagePath = path.join(dir, file, 'package.json')
+  const packageLockPath = path.join(dir, file, 'package-lock.json')
 
-  options = Object.assign(options, {npm: {progress: false}})
-
-  return function (results) {
+  return (results) => {
     try {
-      const manifest = require(packagePath)
+      const packageJSON = require(packagePath)
+      const packageLockJSON = require(packageLockPath)
+      const dependencies = packageJSON.dependencies || {}
+      const devDependencies = packageJSON.devDependencies || {}
+      const allDependencies = Object.assign({}, dependencies, devDependencies)
 
-      return getUpdatedDependencies(manifest, options).then(function (current) {
-        Object.keys(current).forEach(function (name) {
-          results.push('upgrade ' + name)
+      return Promise.all(Object.keys(allDependencies).map((dependency) => {
+        return exec(`npm view ${dependency} --json`).then((out, err) => {
+          if (err != null) {
+            return Promise.reject(new Error(Buffer.from(...err).toString()))
+          }
+
+          out = Buffer.from(...out).toString()
+
+          const outJSON = JSON.parse(out)
+
+          if (outJSON['dist-tags'].latest !== packageLockJSON.dependencies[dependency].version) {
+            if (semver.satisfies(outJSON['dist-tags'].latest, allDependencies[dependency])) {
+              results.push('update ' + dependency)
+            } else {
+              results.push('upgrade ' + dependency)
+            }
+          }
         })
-
-        return Promise.resolve(results)
-      })
+      })).then(() => Promise.resolve(results))
     } catch (e) {
       return Promise.resolve(results)
     }
