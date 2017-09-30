@@ -2,11 +2,6 @@
 const action = require('./src/action')
 const command = require('sergeant')
 
-command('checkup', ({option}) => {
-  option('unstable', {
-    description: 'use unstable',
-    type: Boolean
-  })
-
+command('checkup', () => {
   return action
 })(process.argv.slice(2))
