@@ -2,10 +2,10 @@ const simpleGit = require('simple-git')
 const fs = require('fs')
 const path = require('path')
 
-module.exports = function (file) {
-  return function (results) {
-    return new Promise(function (resolve, reject) {
-      fs.access(path.join(file, '.git'), fs.constants.R_OK, function (err) {
+module.exports = (file) => {
+  return (results) => {
+    return new Promise((resolve, reject) => {
+      fs.access(path.join(file, '.git'), fs.constants.R_OK, (err) => {
         if (err) {
           resolve(results)
 
@@ -14,7 +14,7 @@ module.exports = function (file) {
 
         const repo = simpleGit(file)
 
-        repo.status(function (err, status) {
+        repo.status((err, status) => {
           if (err) {
             reject(err)
 

@@ -5,24 +5,24 @@ const fs = require('fs')
 const thenify = require('thenify')
 const readdir = thenify(fs.readdir)
 
-module.exports = function (args) {
+module.exports = (args) => {
   const dir = process.cwd()
 
-  return readdir(dir).then(function (files) {
-    return Promise.all(files.filter((file) => !file.startsWith('.')).map(function (file) {
+  return readdir(dir).then((files) => {
+    return Promise.all(files.filter((file) => !file.startsWith('.')).map((file) => {
       return checks(file, args)
-      .then(function (results) {
+      .then((results) => {
         return {name: file, results}
       })
     }))
   })
-  .then(function (results) {
-    results.forEach(function (result) {
+  .then((results) => {
+    results.forEach((result) => {
       if (result.results != null) {
         if (result.results.length) {
           log.log(chalk.bold(chalk.red('\u2718 ') + result.name))
 
-          result.results.forEach(function (result) {
+          result.results.forEach((result) => {
             log.log(chalk.gray('  - ' + result))
           })
         } else {
