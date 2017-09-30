@@ -1,7 +1,7 @@
 const path = require('path')
 const semver = require('semver')
-const thenify = require('thenify')
-const exec = thenify(require('child_process').exec)
+const spawn = require('child_process').spawn
+const distPromises = {}
 
 module.exports = (file) => {
   const dir = process.cwd()
@@ -17,26 +17,47 @@ module.exports = (file) => {
       const allDependencies = Object.assign({}, dependencies, devDependencies)
 
       return Promise.all(Object.keys(allDependencies).map((dependency) => {
-        return exec(`npm view ${dependency} --json`).then((out, err) => {
-          if (err != null) {
-            return Promise.reject(new Error(Buffer.from(...err).toString()))
+        return new Promise((resolve, reject) => {
+          if (distPromises[dependency] == null) {
+            distPromises[dependency] = generateDistPromise(dependency)
           }
 
-          out = Buffer.from(...out).toString()
-
-          const outJSON = JSON.parse(out)
-
-          if (outJSON['dist-tags'].latest !== packageLockJSON.dependencies[dependency].version) {
-            if (semver.satisfies(outJSON['dist-tags'].latest, allDependencies[dependency])) {
-              results.push('update ' + dependency)
-            } else {
-              results.push('upgrade ' + dependency)
+          distPromises[dependency].then((latest) => {
+            if (latest !== packageLockJSON.dependencies[dependency].version) {
+              if (semver.satisfies(latest, allDependencies[dependency])) {
+                results.push('update ' + dependency)
+              } else {
+                results.push('upgrade ' + dependency)
+              }
             }
-          }
+
+            resolve()
+          }, reject)
         })
       })).then(() => Promise.resolve(results))
     } catch (e) {
       return Promise.resolve(results)
     }
   }
+}
+
+function generateDistPromise (dependency) {
+  return new Promise((resolve, reject) => {
+    const view = spawn('npm', ['view', dependency, 'dist-tags', '--json'])
+    let data = ''
+
+    view.stdout.on('data', (out) => {
+      data += out
+    })
+
+    view.stderr.on('data', (err) => {
+      reject(new Error(err))
+    })
+
+    view.on('close', (code) => {
+      const parsed = JSON.parse(data)
+
+      resolve(parsed.latest)
+    })
+  })
 }
