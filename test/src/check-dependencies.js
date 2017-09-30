@@ -12,7 +12,7 @@ test('test src/check-dependencies - failed require', function (t) {
     spawn () {
       return {
         stdout: {
-          on: (foo, next) => { next('{"latest": "2.1.0"}') }
+          on: (foo, next) => { next('["2.1.0"]') }
         },
         stderr: {
           on: () => {}
@@ -46,7 +46,7 @@ test('test src/check-dependencies - no results', function (t) {
     spawn () {
       return {
         stdout: {
-          on: (foo, next) => { next('{"latest": "2.1.0"}') }
+          on: (foo, next) => { next('["2.1.0"]') }
         },
         stderr: {
           on: () => {}
@@ -80,7 +80,7 @@ test('test src/check-dependencies - upgrade', function (t) {
     spawn () {
       return {
         stdout: {
-          on: (foo, next) => { next('{"latest": "3.1.0"}') }
+          on: (foo, next) => { next('["3.1.0"]') }
         },
         stderr: {
           on: () => {}
@@ -114,7 +114,7 @@ test('test src/check-dependencies - update', function (t) {
     spawn () {
       return {
         stdout: {
-          on: (foo, next) => { next('{"latest": "2.2.0"}') }
+          on: (foo, next) => { next('["2.2.0"]') }
         },
         stderr: {
           on: () => {}

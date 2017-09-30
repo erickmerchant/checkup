@@ -23,7 +23,7 @@ module.exports = (file) => {
           }
 
           distPromises[dependency].then((latest) => {
-            if (latest !== packageLockJSON.dependencies[dependency].version) {
+            if (latest && latest !== packageLockJSON.dependencies[dependency].version) {
               if (semver.satisfies(latest, allDependencies[dependency])) {
                 results.push('update ' + dependency)
               } else {
@@ -43,7 +43,7 @@ module.exports = (file) => {
 
 function generateDistPromise (dependency) {
   return new Promise((resolve, reject) => {
-    const view = spawn('npm', ['view', dependency, 'dist-tags', '--json'])
+    const view = spawn('npm', ['view', dependency, 'versions', '--json'])
     let data = ''
 
     view.stdout.on('data', (out) => {
@@ -55,9 +55,11 @@ function generateDistPromise (dependency) {
     })
 
     view.on('close', (code) => {
-      const parsed = JSON.parse(data)
+      let versions = JSON.parse(data)
 
-      resolve(parsed.latest)
+      versions = versions.filter((version) => semver.prerelease(version) == null)
+
+      resolve(versions.pop())
     })
   })
 }
