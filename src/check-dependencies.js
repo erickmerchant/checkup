@@ -33,10 +33,10 @@ module.exports = (file) => {
             let next = semver.prerelease(outdated[dependency].latest) == null ? outdated[dependency].latest : outdated[dependency].wanted
 
             if (next !== outdated[dependency].current) {
-              if (semver.diff(next, outdated[dependency].current) !== 'major') {
-                results.push('update ' + dependency)
-              } else {
+              if (semver.diff(next, outdated[dependency].current) === 'major') {
                 results.push('upgrade ' + dependency)
+              } else if (!semver.lt(next, outdated[dependency].current)) {
+                results.push('update ' + dependency)
               }
             }
           })
