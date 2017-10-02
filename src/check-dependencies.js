@@ -1,65 +1,49 @@
+const fs = require('fs')
 const path = require('path')
 const semver = require('semver')
 const spawn = require('child_process').spawn
-const distPromises = {}
 
 module.exports = (file) => {
   const dir = process.cwd()
-  const packagePath = path.join(dir, file, 'package.json')
-  const packageLockPath = path.join(dir, file, 'package-lock.json')
 
   return (results) => {
-    try {
-      const packageJSON = require(packagePath)
-      const packageLockJSON = require(packageLockPath)
-      const dependencies = packageJSON.dependencies || {}
-      const devDependencies = packageJSON.devDependencies || {}
-      const allDependencies = Object.assign({}, dependencies, devDependencies)
+    return new Promise((resolve, reject) => {
+      fs.access(path.join(file, '.git'), fs.constants.R_OK, (err) => {
+        if (err) {
+          resolve(results)
 
-      return Promise.all(Object.keys(allDependencies).map((dependency) => {
-        return new Promise((resolve, reject) => {
-          if (distPromises[dependency] == null) {
-            distPromises[dependency] = generateDistPromise(dependency)
-          }
+          return
+        }
 
-          distPromises[dependency].then((latest) => {
-            if (latest && latest !== packageLockJSON.dependencies[dependency].version) {
-              if (semver.satisfies(latest, allDependencies[dependency])) {
+        const view = spawn('npm', ['outdated', '--json'], {cwd: path.join(dir, file)})
+        let data = ''
+
+        view.stdout.on('data', (out) => {
+          data += out
+        })
+
+        view.stderr.on('data', (err) => {
+          reject(new Error(err))
+        })
+
+        view.on('close', (code) => {
+          let outdated = data ? JSON.parse(data) : {}
+
+          Object.keys(outdated).forEach((dependency) => {
+            let next = semver.prerelease(outdated[dependency].latest) == null ? outdated[dependency].latest : outdated[dependency].wanted
+
+            if (next !== outdated[dependency].current) {
+              if (semver.diff(next, outdated[dependency].current) !== 'major') {
                 results.push('update ' + dependency)
               } else {
                 results.push('upgrade ' + dependency)
               }
             }
+          })
 
-            resolve()
-          }, reject)
+          resolve(results)
         })
-      })).then(() => Promise.resolve(results))
-    } catch (e) {
-      return Promise.resolve(results)
-    }
+      })
+    })
   }
-}
-
-function generateDistPromise (dependency) {
-  return new Promise((resolve, reject) => {
-    const view = spawn('npm', ['view', dependency, 'versions', '--json'])
-    let data = ''
-
-    view.stdout.on('data', (out) => {
-      data += out
-    })
-
-    view.stderr.on('data', (err) => {
-      reject(new Error(err))
-    })
-
-    view.on('close', (code) => {
-      let versions = JSON.parse(data)
-
-      versions = versions.filter((version) => semver.prerelease(version) == null)
-
-      resolve(versions.pop())
-    })
-  })
 }
