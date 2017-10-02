@@ -99,11 +99,7 @@ test('test src/check-git-status - no .git', function (t) {
   })
 
   mockery.registerMock('simple-git', function () {
-    return {
-      status: function (callback) {
-        callback(null, {})
-      }
-    }
+    return {}
   })
 
   mockery.registerMock('fs', {

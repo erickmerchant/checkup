@@ -8,7 +8,7 @@ module.exports = (file) => {
 
   return (results) => {
     return new Promise((resolve, reject) => {
-      fs.access(path.join(file, '.git'), fs.constants.R_OK, (err) => {
+      fs.access(path.join(file, 'package.json'), fs.constants.R_OK, (err) => {
         if (err) {
           resolve(results)
 
