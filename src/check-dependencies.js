@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const semver = require('semver')
-const spawn = require('child_process').spawn
+const execa = require('execa')
 
 module.exports = (file) => {
   const dir = process.cwd()
@@ -15,34 +15,25 @@ module.exports = (file) => {
           return
         }
 
-        const view = spawn('npm', ['outdated', '--json'], {cwd: path.join(dir, file)})
-        let data = ''
+        execa('npm', ['outdated', '--json'], {cwd: path.join(dir, file), reject: false})
+          .then((result) => {
+            let outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-        view.stdout.on('data', (out) => {
-          data += out
-        })
+            Object.keys(outdated).forEach((dependency) => {
+              let next = semver.prerelease(outdated[dependency].latest) == null ? outdated[dependency].latest : outdated[dependency].wanted
 
-        view.stderr.on('data', (err) => {
-          reject(new Error(err))
-        })
-
-        view.on('close', (code) => {
-          let outdated = data ? JSON.parse(data) : {}
-
-          Object.keys(outdated).forEach((dependency) => {
-            let next = semver.prerelease(outdated[dependency].latest) == null ? outdated[dependency].latest : outdated[dependency].wanted
-
-            if (next !== outdated[dependency].current) {
-              if (semver.diff(next, outdated[dependency].current) === 'major') {
-                results.push('upgrade ' + dependency)
-              } else if (!semver.lt(next, outdated[dependency].current)) {
-                results.push('update ' + dependency)
+              if (next !== outdated[dependency].current) {
+                if (semver.diff(next, outdated[dependency].current) === 'major') {
+                  results.push('upgrade ' + dependency)
+                } else if (!semver.lt(next, outdated[dependency].current)) {
+                  results.push('update ' + dependency)
+                }
               }
-            }
-          })
+            })
 
-          resolve(results)
-        })
+            resolve(results)
+          })
+          .catch(reject)
       })
     })
   }

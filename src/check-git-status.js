@@ -1,8 +1,10 @@
-const simpleGit = require('simple-git')
 const fs = require('fs')
 const path = require('path')
+const execa = require('execa')
 
 module.exports = (file) => {
+  const dir = process.cwd()
+
   return (results) => {
     return new Promise((resolve, reject) => {
       fs.access(path.join(file, '.git'), fs.constants.R_OK, (err) => {
@@ -12,49 +14,17 @@ module.exports = (file) => {
           return
         }
 
-        const repo = simpleGit(file)
+        execa('git', ['status', '--porcelain'], {cwd: path.join(dir, file), reject: false})
+          .then((result) => {
+            let outdated = result.stdout
 
-        repo.status((err, status) => {
-          if (err) {
-            reject(err)
+            if (outdated !== '') {
+              results.push('working directory unclean')
+            }
 
-            return
-          }
-
-          if (status.not_added.length) {
-            results.push('not added ' + status.not_added.length)
-          }
-
-          if (status.conflicted.length) {
-            results.push('conflicted ' + status.conflicted.length)
-          }
-
-          if (status.created.length) {
-            results.push('created ' + status.created.length)
-          }
-
-          if (status.deleted.length) {
-            results.push('deleted ' + status.deleted.length)
-          }
-
-          if (status.modified.length) {
-            results.push('modified ' + status.modified.length)
-          }
-
-          if (status.renamed.length) {
-            results.push('renamed ' + status.renamed.length)
-          }
-
-          if (status.ahead) {
-            results.push('ahead ' + status.ahead)
-          }
-
-          if (status.behind) {
-            results.push('behind ' + status.behind)
-          }
-
-          resolve(results)
-        })
+            resolve(results)
+          })
+          .catch(reject)
       })
     })
   }

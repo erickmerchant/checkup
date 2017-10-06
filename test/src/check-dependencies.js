@@ -8,7 +8,7 @@ test('test src/check-dependencies - no package.json', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('child_process', {})
+  mockery.registerMock('execa', {})
 
   mockery.registerMock('fs', {
     access: function (file, mode, callback) {
@@ -35,20 +35,10 @@ test('test src/check-dependencies - no results', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('child_process', {
-    spawn () {
-      return {
-        stdout: {
-          on: (foo, next) => { next('') }
-        },
-        stderr: {
-          on: () => {}
-        },
-        on (foo, next) {
-          next(0)
-        }
-      }
-    }
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: ''
+    })
   })
 
   mockery.registerMock('fs', {
@@ -76,27 +66,15 @@ test('test src/check-dependencies - upgrade', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('child_process', {
-    spawn () {
-      return {
-        stdout: {
-          on: (foo, next) => {
-            next(`{
-              "foo": {
-                "latest": "2.0.0",
-                "current": "1.0.0"
-              }
-            }`)
-          }
-        },
-        stderr: {
-          on: () => {}
-        },
-        on (foo, next) {
-          next(0)
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: `{
+        "foo": {
+          "latest": "2.0.0",
+          "current": "1.0.0"
         }
-      }
-    }
+      }`
+    })
   })
 
   mockery.registerMock('fs', {
@@ -124,27 +102,15 @@ test('test src/check-dependencies - update', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('child_process', {
-    spawn () {
-      return {
-        stdout: {
-          on: (foo, next) => {
-            next(`{
-              "foo": {
-                "latest": "1.1.0",
-                "current": "1.0.0"
-              }
-            }`)
-          }
-        },
-        stderr: {
-          on: () => {}
-        },
-        on (foo, next) {
-          next(0)
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: `{
+        "foo": {
+          "latest": "1.1.0",
+          "current": "1.0.0"
         }
-      }
-    }
+      }`
+    })
   })
 
   mockery.registerMock('fs', {

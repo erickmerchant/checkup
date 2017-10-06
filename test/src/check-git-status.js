@@ -8,21 +8,10 @@ test('test src/check-git-status - no results', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('simple-git', function () {
-    return {
-      status: function (callback) {
-        callback(null, {
-          not_added: [],
-          conflicted: [],
-          created: [],
-          deleted: [],
-          modified: [],
-          renamed: [],
-          ahead: null,
-          behind: null
-        })
-      }
-    }
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: ''
+    })
   })
 
   mockery.registerMock('fs', {
@@ -53,21 +42,10 @@ test('test src/check-git-status - results', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('simple-git', function () {
-    return {
-      status: function (callback) {
-        callback(null, {
-          not_added: ['test'],
-          conflicted: ['test'],
-          created: ['test'],
-          deleted: ['test'],
-          modified: ['test'],
-          renamed: ['test'],
-          ahead: 'test',
-          behind: 'test'
-        })
-      }
-    }
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: 'M  foo'
+    })
   })
 
   mockery.registerMock('fs', {
@@ -82,7 +60,7 @@ test('test src/check-git-status - results', function (t) {
   t.plan(1)
 
   checkGitStatus('test')([]).then(function (results) {
-    t.deepEqual(results, [ 'not added 1', 'conflicted 1', 'created 1', 'deleted 1', 'modified 1', 'renamed 1', 'ahead test', 'behind test' ])
+    t.deepEqual(results, [ 'working directory unclean' ])
 
     mockery.disable()
   })
@@ -98,8 +76,10 @@ test('test src/check-git-status - no .git', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('simple-git', function () {
-    return {}
+  mockery.registerMock('execa', () => {
+    return Promise.resolve({
+      stdout: ''
+    })
   })
 
   mockery.registerMock('fs', {
@@ -120,37 +100,5 @@ test('test src/check-git-status - no .git', function (t) {
   })
   .catch(function (err) {
     t.notOk(err)
-  })
-})
-
-test('test src/check-git-status - error', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('simple-git', function () {
-    return {
-      status: function (callback) {
-        callback(new Error('test'))
-      }
-    }
-  })
-
-  mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
-      callback(null)
-    },
-    constants: { R_OK: true }
-  })
-
-  const checkGitStatus = require('../../src/check-git-status')
-
-  t.plan(1)
-
-  checkGitStatus('test')([])
-  .catch(function (err) {
-    t.ok(err)
   })
 })
