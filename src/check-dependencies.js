@@ -3,19 +3,17 @@ const path = require('path')
 const semver = require('semver')
 const execa = require('execa')
 
-module.exports = (file) => {
-  const dir = process.cwd()
-
+module.exports = (directory) => {
   return (results) => {
     return new Promise((resolve, reject) => {
-      fs.access(path.join(file, 'package.json'), fs.constants.R_OK, (err) => {
+      fs.access(path.join(directory, 'package.json'), fs.constants.R_OK, (err) => {
         if (err) {
           resolve(results)
 
           return
         }
 
-        execa('npm', ['outdated', '--json'], {cwd: path.join(dir, file), reject: false})
+        execa('npm', ['outdated', '--json'], {cwd: directory, reject: false})
           .then((result) => {
             let outdated = result.stdout ? JSON.parse(result.stdout) : {}
 

@@ -2,19 +2,17 @@ const fs = require('fs')
 const path = require('path')
 const execa = require('execa')
 
-module.exports = (file) => {
-  const dir = process.cwd()
-
+module.exports = (directory) => {
   return (results) => {
     return new Promise((resolve, reject) => {
-      fs.access(path.join(file, '.git'), fs.constants.R_OK, (err) => {
+      fs.access(path.join(directory, '.git'), fs.constants.R_OK, (err) => {
         if (err) {
           resolve(results)
 
           return
         }
 
-        execa('git', ['status', '--porcelain'], {cwd: path.join(dir, file), reject: false})
+        execa('git', ['status', '--porcelain'], {cwd: directory, reject: false})
           .then((result) => {
             let outdated = result.stdout
 

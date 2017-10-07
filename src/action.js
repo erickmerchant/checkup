@@ -2,17 +2,30 @@ const log = require('./log')
 const checks = require('./checks')
 const chalk = require('chalk')
 const fs = require('fs')
+const path = require('path')
 const thenify = require('thenify')
 const readdir = thenify(fs.readdir)
 
 module.exports = (args) => {
-  const dir = process.cwd()
+  let directoryPromise
 
-  return readdir(dir).then((files) => {
-    return Promise.all(files.filter((file) => !file.startsWith('.')).map((file) => {
-      return checks(file, args)
+  if (args.directory) {
+    directoryPromise = Promise.resolve(args.directory)
+  } else {
+    const dir = process.cwd()
+
+    directoryPromise = readdir(dir).then((files) => {
+      return files
+        .filter((file) => !file.startsWith('.'))
+        .map((file) => path.join(dir, file))
+    })
+  }
+
+  return directoryPromise.then((directories) => {
+    return Promise.all(directories.map((directory) => {
+      return checks(directory, args)
       .then((results) => {
-        return {name: file, results}
+        return {name: path.relative(process.cwd(), directory) || '.', results}
       })
     }))
   })

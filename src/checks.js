@@ -1,8 +1,8 @@
 const checkGitStatus = require('./check-git-status')
 const checkDependencies = require('./check-dependencies')
 
-module.exports = (file, args) => {
+module.exports = (directory, args) => {
   return Promise.resolve([])
-    .then(checkDependencies(file))
-    .then(checkGitStatus(file))
+    .then(checkDependencies(directory))
+    .then(checkGitStatus(directory))
 }
