@@ -14,7 +14,7 @@ module.exports = (directory) => {
 
         execa('git', ['status', '--porcelain'], {cwd: directory, reject: false})
           .then((result) => {
-            let outdated = result.stdout
+            const outdated = result.stdout
 
             if (outdated !== '') {
               results.push('working directory unclean')

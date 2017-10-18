@@ -1,6 +1,11 @@
 # checkup
 
-Essentially it looks at all the directories in the current working directory and runs [david](https://www.npmjs.com/package/david) on them. I wrote this because [this page](https://david-dm.org/erickmerchant) wasn't working. It also runs git status. More tests may be added in the future.
+Essentially it looks at all the directories in the current working directory and runs a few checks on them. I wrote this because [this page](https://david-dm.org/erickmerchant) wasn't working. More checks may be added in the future.
+
+## Checks
+
+- compares the output of `npm outdated --json` to the package-lock.json versions
+- runs `git status --porcelain`
 
 ## Install
 
