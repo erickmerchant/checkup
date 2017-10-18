@@ -35,6 +35,14 @@ test('test src/check-dependencies - no results', function (t) {
     warnOnUnregistered: false
   })
 
+  mockery.registerMock('test/package-lock.json', {
+    dependencies: {
+      foo: {
+        version: '1.0.0'
+      }
+    }
+  })
+
   mockery.registerMock('execa', () => {
     return Promise.resolve({
       stdout: ''
@@ -66,12 +74,19 @@ test('test src/check-dependencies - upgrade', function (t) {
     warnOnUnregistered: false
   })
 
+  mockery.registerMock('test/package-lock.json', {
+    dependencies: {
+      foo: {
+        version: '1.0.0'
+      }
+    }
+  })
+
   mockery.registerMock('execa', () => {
     return Promise.resolve({
       stdout: `{
         "foo": {
-          "latest": "2.0.0",
-          "current": "1.0.0"
+          "latest": "2.0.0"
         }
       }`
     })
@@ -102,12 +117,19 @@ test('test src/check-dependencies - update', function (t) {
     warnOnUnregistered: false
   })
 
+  mockery.registerMock('test/package-lock.json', {
+    dependencies: {
+      foo: {
+        version: '1.0.0'
+      }
+    }
+  })
+
   mockery.registerMock('execa', () => {
     return Promise.resolve({
       stdout: `{
         "foo": {
-          "latest": "1.1.0",
-          "current": "1.0.0"
+          "latest": "1.1.0"
         }
       }`
     })
