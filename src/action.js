@@ -8,12 +8,13 @@ const readdir = thenify(fs.readdir)
 
 module.exports = (args) => {
   let directoryPromise
+  const dir = process.cwd()
 
   if (args.directory) {
-    directoryPromise = Promise.resolve(args.directory)
+    directoryPromise = Promise.resolve(args.directory.map((directory) => {
+      return path.join(dir, directory)
+    }))
   } else {
-    const dir = process.cwd()
-
     directoryPromise = readdir(dir).then((files) => {
       return files
         .filter((file) => !file.startsWith('.'))
