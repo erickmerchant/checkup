@@ -86,7 +86,7 @@ test('test src/check-dependencies - upgrade', function (t) {
     return Promise.resolve({
       stdout: `{
         "foo": {
-          "latest": "2.0.0"
+          "wanted": "2.0.0"
         }
       }`
     })
@@ -129,7 +129,7 @@ test('test src/check-dependencies - update', function (t) {
     return Promise.resolve({
       stdout: `{
         "foo": {
-          "latest": "1.1.0"
+          "wanted": "1.1.0"
         }
       }`
     })

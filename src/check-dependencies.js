@@ -20,13 +20,13 @@ module.exports = (directory) => {
             const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
             Object.keys(outdated).forEach((dependency) => {
-              const next = semver.prerelease(outdated[dependency].latest) == null ? outdated[dependency].latest : outdated[dependency].wanted
+              const wanted = outdated[dependency].wanted
               const current = locked.dependencies[dependency].version
 
-              if (next !== current) {
-                if (semver.diff(next, current) === 'major') {
+              if (wanted != null && wanted !== current) {
+                if (semver.diff(wanted, current) === 'major') {
                   results.push('upgrade ' + dependency)
-                } else if (!semver.lt(next, current)) {
+                } else if (!semver.lt(wanted, current)) {
                   results.push('update ' + dependency)
                 }
               }
