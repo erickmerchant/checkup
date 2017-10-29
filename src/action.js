@@ -5,6 +5,8 @@ const fs = require('fs')
 const path = require('path')
 const thenify = require('thenify')
 const readdir = thenify(fs.readdir)
+const PQueue = require('p-queue')
+const queue = new PQueue({concurrency: 1})
 
 module.exports = (args) => {
   let directoryPromise
@@ -24,10 +26,10 @@ module.exports = (args) => {
 
   return directoryPromise.then((directories) => {
     return Promise.all(directories.map((directory) => {
-      return checks(directory, args)
+      return queue.add(() => checks(directory, args)
       .then((results) => {
         return {name: path.relative(process.cwd(), directory) || '.', results}
-      })
+      }))
     }))
   })
   .then((results) => {
