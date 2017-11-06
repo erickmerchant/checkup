@@ -22,7 +22,7 @@
     "execa": "^0.8.0",
     "p-queue": "^2.2.0",
     "semver": "^5.4.1",
-    "sergeant": "^15.4.15",
+    "sergeant": "^15.5.1",
     "thenify": "^3.3.0"
   },
   "devDependencies": {
