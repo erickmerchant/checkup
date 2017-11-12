@@ -25,16 +25,20 @@ module.exports = (directory) => {
 
               let next = outdated[dependency].wanted
 
-              if (latest != null && semver.prerelease(latest) == null) {
-                next = latest
-              }
-
-              if (next != null && next !== current) {
-                if (semver.diff(next, current) === 'major') {
-                  results.push('upgrade ' + dependency)
-                } else if (!semver.lt(next, current)) {
-                  results.push('update ' + dependency)
+              try {
+                if (latest != null && semver.prerelease(latest) == null) {
+                  next = latest
                 }
+
+                if (next != null && next !== current) {
+                  if (semver.diff(next, current) === 'major') {
+                    results.push('upgrade ' + dependency)
+                  } else if (!semver.lt(next, current)) {
+                    results.push('update ' + dependency)
+                  }
+                }
+              } catch (e) {
+                results.push('linked ' + dependency)
               }
             })
 
