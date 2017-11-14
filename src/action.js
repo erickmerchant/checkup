@@ -1,12 +1,15 @@
-const log = require('./log')
+const globals = require('./globals')
+const console = globals.console
+const setInterval = globals.setInterval
+const clearInterval = globals.clearInterval
 const checks = require('./checks')
 const chalk = require('chalk')
 const fs = require('fs')
 const path = require('path')
 const thenify = require('thenify')
 const readdir = thenify(fs.readdir)
-const PQueue = require('p-queue')
-const queue = new PQueue({concurrency: 1})
+const logUpdate = require('log-update')
+const dots = require('cli-spinners').dots2
 
 module.exports = (args) => {
   let directoryPromise
@@ -25,28 +28,43 @@ module.exports = (args) => {
   }
 
   return directoryPromise.then((directories) => {
-    return Promise.all(directories.map((directory) => {
-      return queue.add(() => checks(directory, args)
-      .then((results) => {
-        return {name: path.relative(process.cwd(), directory) || '.', results}
-      }))
-    }))
-  })
-  .then((results) => {
-    results.forEach((result) => {
-      if (result.results != null) {
-        if (result.results.length) {
-          log.log(chalk.bold(chalk.red('\u2718 ') + result.name))
+    return directories.reduce((acc, directory) => {
+      return acc.then(() => {
+        const name = path.relative(process.cwd(), directory) || '.'
+        const frames = dots.frames
+        let i = 0
 
-          result.results.forEach((result) => {
-            log.log(chalk.gray('  - ' + result))
-          })
-        } else {
-          log.log(chalk.bold(chalk.green('\u2714 ') + result.name))
-        }
-      } else {
-        log.log(chalk.bold(chalk.gray('\u2718 ') + result.name))
-      }
-    })
+        let interval = setInterval(() => {
+          const frame = frames[i = ++i % frames.length]
+
+          logUpdate(`${chalk.bold.cyan(frame)}  ${chalk.bold(name)}`)
+        }, dots.interval)
+
+        return checks(directory, args)
+        .then((results) => {
+          if (results != null) {
+            clearInterval(interval)
+
+            if (results.length) {
+              logUpdate(`${chalk.bold.red('\u2718 ')} ${chalk.bold(name)}`)
+
+              logUpdate.done()
+
+              results.forEach((result) => {
+                console.log(chalk.gray('  - ' + result))
+              })
+            } else {
+              logUpdate(`${chalk.bold.green('\u2714 ')} ${chalk.bold(name)}`)
+
+              logUpdate.done()
+            }
+          } else {
+            logUpdate(`${chalk.bold.gray('\u2718 ')} ${chalk.bold(name)}`)
+
+            logUpdate.done()
+          }
+        })
+      })
+    }, Promise.resolve())
   })
 }
