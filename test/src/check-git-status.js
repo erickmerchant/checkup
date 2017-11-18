@@ -10,7 +10,7 @@ test('test src/check-git-status - no results', function (t) {
 
   mockery.registerMock('execa', () => {
     return Promise.resolve({
-      stdout: ''
+      stdout: '## master...origin/master'
     })
   })
 
@@ -78,7 +78,7 @@ test('test src/check-git-status - no .git', function (t) {
 
   mockery.registerMock('execa', () => {
     return Promise.resolve({
-      stdout: ''
+      stdout: '## master...origin/master'
     })
   })
 
