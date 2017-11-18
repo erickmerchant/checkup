@@ -12,11 +12,11 @@ module.exports = (directory) => {
           return
         }
 
-        execa('git', ['status', '--porcelain'], {cwd: directory, reject: false})
+        execa('git', ['status', '--porcelain', '-b'], {cwd: directory, reject: false})
           .then((result) => {
             const outdated = result.stdout
 
-            if (outdated !== '') {
+            if (outdated !== '## master...origin/master') {
               results.push('working directory unclean')
             }
 
