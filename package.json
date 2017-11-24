@@ -23,7 +23,7 @@
     "execa": "^0.8.0",
     "log-update": "^2.3.0",
     "semver": "^5.4.1",
-    "sergeant": "^16.0.1",
+    "sergeant": "^16.1.0",
     "thenify": "^3.3.0"
   },
   "devDependencies": {
