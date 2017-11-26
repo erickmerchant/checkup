@@ -33,15 +33,15 @@ test('test src/action - no results', function (t) {
     return Promise.resolve(null)
   })
 
-  mockery.registerMock('fs', {
-    readdir: function (dir, callback) {
-      callback(null, ['test'])
-    }
+  mockery.registerMock('glob', function (dir, callback) {
+    callback(null, ['test'])
   })
 
   t.plan(1)
 
-  require('../../src/action')({}).then(function () {
+  require('../../src/action')({
+    directory: ['./*/']
+  }).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.gray('\u2718  ') + 'test')
     ])
@@ -81,15 +81,15 @@ test('test src/action - zero length results', function (t) {
     return Promise.resolve([])
   })
 
-  mockery.registerMock('fs', {
-    readdir: function (dir, callback) {
-      callback(null, ['test'])
-    }
+  mockery.registerMock('glob', function (dir, callback) {
+    callback(null, ['test'])
   })
 
   t.plan(1)
 
-  require('../../src/action')({}).then(function () {
+  require('../../src/action')({
+    directory: ['./*/']
+  }).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.green('\u2714  ') + 'test')
     ])
@@ -129,15 +129,15 @@ test('test src/action - non-zero length results', function (t) {
     return Promise.resolve(['test'])
   })
 
-  mockery.registerMock('fs', {
-    readdir: function (dir, callback) {
-      callback(null, ['test'])
-    }
+  mockery.registerMock('glob', function (dir, callback) {
+    callback(null, ['test'])
   })
 
   t.plan(1)
 
-  require('../../src/action')({}).then(function () {
+  require('../../src/action')({
+    directory: ['./*/']
+  }).then(function () {
     t.deepEqual(logged, [
       chalk.bold(chalk.red('\u2718  ') + 'test'),
       chalk.gray('  - test')

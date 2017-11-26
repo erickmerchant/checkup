@@ -4,28 +4,20 @@ const setInterval = globals.setInterval
 const clearInterval = globals.clearInterval
 const checks = require('./checks')
 const chalk = require('chalk')
-const fs = require('fs')
 const path = require('path')
 const thenify = require('thenify')
-const readdir = thenify(fs.readdir)
+const glob = thenify(require('glob'))
 const logUpdate = require('log-update')
 const dots = require('cli-spinners').dots2
 
 module.exports = (args) => {
-  let directoryPromise
   const dir = process.cwd()
-
-  if (args.directory) {
-    directoryPromise = Promise.resolve(args.directory.map((directory) => {
-      return path.join(dir, directory)
-    }))
-  } else {
-    directoryPromise = readdir(dir).then((files) => {
-      return files
-        .filter((file) => !file.startsWith('.'))
-        .map((file) => path.join(dir, file))
-    })
-  }
+  const directoryPromise = Promise.all(args.directory.map((directory) => glob(directory)))
+    .then((directories) => directories
+      .reduce((directories, current) => directories.concat(current.filter((directory) => !directories.includes(directory))), [])
+      .map((directory) => {
+        return path.join(dir, directory)
+      }))
 
   return directoryPromise.then((directories) => {
     return directories.reduce((acc, directory) => {
