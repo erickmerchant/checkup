@@ -13,11 +13,13 @@ const dots = require('cli-spinners').dots2
 module.exports = (args) => {
   const dir = process.cwd()
   const directoryPromise = Promise.all(args.directory.map((directory) => glob(directory)))
-    .then((directories) => directories
-      .reduce((directories, current) => directories.concat(current.filter((directory) => !directories.includes(directory))), [])
-      .map((directory) => {
-        return path.join(dir, directory)
-      }))
+    .then((directories) => {
+      return directories
+        .reduce((directories, current) => directories.concat(current.filter((directory) => !directories.includes(directory))), [])
+        .map((directory) => {
+          return path.join(dir, directory)
+        })
+    })
 
   return directoryPromise.then((directories) => {
     return directories.reduce((acc, directory) => {
