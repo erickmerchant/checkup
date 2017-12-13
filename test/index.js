@@ -19,7 +19,7 @@ test('test src/action - no results', function (t) {
 
   mockery.registerMock('log-update', logUpdate)
 
-  mockery.registerMock('./globals', {
+  mockery.registerMock('./src/globals', {
     console: {
       log: function (msg) {
         logged.push(msg)
@@ -29,7 +29,7 @@ test('test src/action - no results', function (t) {
     clearInterval: () => { }
   })
 
-  mockery.registerMock('./checks', function () {
+  mockery.registerMock('./src/checks', function () {
     return Promise.resolve(null)
   })
 
@@ -39,11 +39,11 @@ test('test src/action - no results', function (t) {
 
   t.plan(1)
 
-  require('../../src/action')({
+  require('../')({
     directory: ['./*/']
   }).then(function () {
     t.deepEqual(logged, [
-      chalk.bold(chalk.gray('\u2718  ') + 'test')
+      chalk.bold.gray('\u2718') + '  ' + chalk.bold('test')
     ])
 
     mockery.disable()
@@ -67,7 +67,7 @@ test('test src/action - zero length results', function (t) {
 
   mockery.registerMock('log-update', logUpdate)
 
-  mockery.registerMock('./globals', {
+  mockery.registerMock('./src/globals', {
     console: {
       log: function (msg) {
         logged.push(msg)
@@ -77,7 +77,7 @@ test('test src/action - zero length results', function (t) {
     clearInterval: () => { }
   })
 
-  mockery.registerMock('./checks', function () {
+  mockery.registerMock('./src/checks', function () {
     return Promise.resolve([])
   })
 
@@ -87,11 +87,11 @@ test('test src/action - zero length results', function (t) {
 
   t.plan(1)
 
-  require('../../src/action')({
+  require('../')({
     directory: ['./*/']
   }).then(function () {
     t.deepEqual(logged, [
-      chalk.bold(chalk.green('\u2714  ') + 'test')
+      chalk.bold.green('\u2714') + '  ' + chalk.bold('test')
     ])
 
     mockery.disable()
@@ -115,7 +115,7 @@ test('test src/action - non-zero length results', function (t) {
 
   mockery.registerMock('log-update', logUpdate)
 
-  mockery.registerMock('./globals', {
+  mockery.registerMock('./src/globals', {
     console: {
       log: function (msg) {
         logged.push(msg)
@@ -125,7 +125,7 @@ test('test src/action - non-zero length results', function (t) {
     clearInterval: () => { }
   })
 
-  mockery.registerMock('./checks', function () {
+  mockery.registerMock('./src/checks', function () {
     return Promise.resolve(['test'])
   })
 
@@ -135,11 +135,11 @@ test('test src/action - non-zero length results', function (t) {
 
   t.plan(1)
 
-  require('../../src/action')({
+  require('../')({
     directory: ['./*/']
   }).then(function () {
     t.deepEqual(logged, [
-      chalk.bold(chalk.red('\u2718  ') + 'test'),
+      chalk.bold.red('\u2718') + '  ' + chalk.bold('test'),
       chalk.gray('  - test')
     ])
 

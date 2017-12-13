@@ -7,18 +7,8 @@ Essentially it looks at all the directories in the current working directory and
 - compares the output of `npm outdated --json` to the package-lock.json versions
 - runs `git status --porcelain`
 
-## Install
-
-Install it globally.
+## Usage
 
 ```
-npm install -g @erickmerchant/checkup
-```
-
-## Run
-
-Get help by running.
-
-```
-checkup --help
+npx @erickmerchant/checkup --help
 ```
