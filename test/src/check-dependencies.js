@@ -11,7 +11,7 @@ test('test src/check-dependencies - no package.json', function (t) {
   mockery.registerMock('execa', {})
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(new Error('test'))
     },
     constants: { R_OK: true }
@@ -43,14 +43,14 @@ test('test src/check-dependencies - no results', function (t) {
     }
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: ''
     })
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(null)
     },
     constants: { R_OK: true }
@@ -82,7 +82,7 @@ test('test src/check-dependencies - upgrade', function (t) {
     }
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: `{
         "foo": {
@@ -93,7 +93,7 @@ test('test src/check-dependencies - upgrade', function (t) {
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(null)
     },
     constants: { R_OK: true }
@@ -125,7 +125,7 @@ test('test src/check-dependencies - update', function (t) {
     }
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: `{
         "foo": {
@@ -136,7 +136,7 @@ test('test src/check-dependencies - update', function (t) {
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(null)
     },
     constants: { R_OK: true }

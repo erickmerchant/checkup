@@ -2,10 +2,10 @@ const fs = require('fs')
 const path = require('path')
 const execa = require('execa')
 
-module.exports = (directory) => {
-  return (results) => {
-    return new Promise((resolve, reject) => {
-      fs.access(path.join(directory, '.git'), fs.constants.R_OK, (err) => {
+module.exports = function (directory) {
+  return function (results) {
+    return new Promise(function (resolve, reject) {
+      fs.access(path.join(directory, '.git'), fs.constants.R_OK, function (err) {
         if (err) {
           resolve(results)
 
@@ -13,7 +13,7 @@ module.exports = (directory) => {
         }
 
         execa('git', ['status', '--porcelain', '-b'], {cwd: directory, reject: false})
-          .then((result) => {
+          .then(function (result) {
             const outdated = result.stdout
 
             if (outdated !== '## master...origin/master') {

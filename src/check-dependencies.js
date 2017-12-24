@@ -3,10 +3,10 @@ const path = require('path')
 const semver = require('semver')
 const execa = require('execa')
 
-module.exports = (directory) => {
-  return (results) => {
-    return new Promise((resolve, reject) => {
-      fs.access(path.join(directory, 'package-lock.json'), fs.constants.R_OK, (err) => {
+module.exports = function (directory) {
+  return function (results) {
+    return new Promise(function (resolve, reject) {
+      fs.access(path.join(directory, 'package-lock.json'), fs.constants.R_OK, function (err) {
         if (err) {
           resolve(results)
 
@@ -16,10 +16,10 @@ module.exports = (directory) => {
         const locked = require(path.join(directory, 'package-lock.json'))
 
         execa('npm', ['outdated', '--json'], {cwd: directory, reject: false})
-          .then((result) => {
+          .then(function (result) {
             const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-            Object.keys(outdated).forEach((dependency) => {
+            Object.keys(outdated).forEach(function (dependency) {
               const latest = outdated[dependency].latest
               const current = locked.dependencies[dependency].version
 

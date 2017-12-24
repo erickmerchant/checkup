@@ -15,18 +15,18 @@ test('test src/action - no results', function (t) {
     logged.push(msg)
   }
 
-  logUpdate.done = () => { }
+  logUpdate.done = () => {}
 
   mockery.registerMock('log-update', logUpdate)
 
   mockery.registerMock('./src/globals', {
     console: {
-      log: function (msg) {
+      log (msg) {
         logged.push(msg)
       }
     },
-    setInterval: () => { },
-    clearInterval: () => { }
+    setInterval () {},
+    clearInterval () {}
   })
 
   mockery.registerMock('./src/checks', function () {
@@ -63,18 +63,18 @@ test('test src/action - zero length results', function (t) {
     logged.push(msg)
   }
 
-  logUpdate.done = () => { }
+  logUpdate.done = () => {}
 
   mockery.registerMock('log-update', logUpdate)
 
   mockery.registerMock('./src/globals', {
     console: {
-      log: function (msg) {
+      log (msg) {
         logged.push(msg)
       }
     },
-    setInterval: () => { },
-    clearInterval: () => { }
+    setInterval () {},
+    clearInterval () {}
   })
 
   mockery.registerMock('./src/checks', function () {
@@ -111,18 +111,18 @@ test('test src/action - non-zero length results', function (t) {
     logged.push(msg)
   }
 
-  logUpdate.done = () => { }
+  logUpdate.done = () => {}
 
   mockery.registerMock('log-update', logUpdate)
 
   mockery.registerMock('./src/globals', {
     console: {
-      log: function (msg) {
+      log (msg) {
         logged.push(msg)
       }
     },
-    setInterval: () => { },
-    clearInterval: () => { }
+    setInterval () {},
+    clearInterval () {}
   })
 
   mockery.registerMock('./src/checks', function () {

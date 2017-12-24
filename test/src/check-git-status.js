@@ -8,14 +8,14 @@ test('test src/check-git-status - no results', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: '## master...origin/master'
     })
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(null)
     },
     constants: { R_OK: true }
@@ -42,14 +42,14 @@ test('test src/check-git-status - results', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: 'M  foo'
     })
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(null)
     },
     constants: { R_OK: true }
@@ -76,14 +76,14 @@ test('test src/check-git-status - no .git', function (t) {
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('execa', () => {
+  mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: '## master...origin/master'
     })
   })
 
   mockery.registerMock('fs', {
-    access: function (file, mode, callback) {
+    access (file, mode, callback) {
       callback(new Error('test'))
     },
     constants: { R_OK: true }
