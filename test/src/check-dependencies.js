@@ -25,6 +25,8 @@ test('test src/check-dependencies - no package.json', function (t) {
     t.deepEqual(results, [])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
 
@@ -64,6 +66,8 @@ test('test src/check-dependencies - no results', function (t) {
     t.deepEqual(results, [])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
 
@@ -107,6 +111,8 @@ test('test src/check-dependencies - upgrade', function (t) {
     t.deepEqual(results, ['upgrade foo'])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
 
@@ -150,5 +156,7 @@ test('test src/check-dependencies - update', function (t) {
     t.deepEqual(results, ['update foo'])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })

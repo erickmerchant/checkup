@@ -26,5 +26,7 @@ test('test src/checks', function (t) {
     t.deepEqual(results, [])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })

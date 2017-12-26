@@ -29,6 +29,8 @@ test('test src/check-git-status - no results', function (t) {
     t.deepEqual(results, [])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
   .catch(function (err) {
     t.notOk(err)
@@ -63,6 +65,8 @@ test('test src/check-git-status - results', function (t) {
     t.deepEqual(results, [ 'working directory unclean' ])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
   .catch(function (err) {
     t.notOk(err)
@@ -97,6 +101,8 @@ test('test src/check-git-status - no .git', function (t) {
     t.deepEqual(results, [])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
   .catch(function (err) {
     t.notOk(err)

@@ -47,6 +47,8 @@ test('test src/action - no results', function (t) {
     ])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
 
@@ -95,6 +97,8 @@ test('test src/action - zero length results', function (t) {
     ])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
 
@@ -144,5 +148,7 @@ test('test src/action - non-zero length results', function (t) {
     ])
 
     mockery.disable()
+
+    mockery.deregisterAll()
   })
 })
