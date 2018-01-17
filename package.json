@@ -1,6 +1,6 @@
 {
   "name": "@erickmerchant/checkup",
-  "version": "4.9.6",
+  "version": "4.9.7",
   "description": "Check multiple projects for various things.",
   "bin": {
     "checkup": "./cli.js"
