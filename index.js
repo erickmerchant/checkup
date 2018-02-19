@@ -33,29 +33,29 @@ module.exports = function (args) {
         }, dots.interval)
 
         return checks(directory, args)
-        .then(function (results) {
-          if (results != null) {
-            clearInterval(interval)
+          .then(function (results) {
+            if (results != null) {
+              clearInterval(interval)
 
-            if (results.length) {
-              logUpdate(`${chalk.bold.red('\u2718')}  ${chalk.bold(name)}`)
+              if (results.length) {
+                logUpdate(`${chalk.bold.red('\u2718')}  ${chalk.bold(name)}`)
 
-              logUpdate.done()
+                logUpdate.done()
 
-              results.forEach(function (result) {
-                console.log(chalk.gray('  - ' + result))
-              })
+                results.forEach(function (result) {
+                  console.log(chalk.gray('  - ' + result))
+                })
+              } else {
+                logUpdate(`${chalk.bold.green('\u2714')}  ${chalk.bold(name)}`)
+
+                logUpdate.done()
+              }
             } else {
-              logUpdate(`${chalk.bold.green('\u2714')}  ${chalk.bold(name)}`)
+              logUpdate(`${chalk.bold.gray('\u2718')}  ${chalk.bold(name)}`)
 
               logUpdate.done()
             }
-          } else {
-            logUpdate(`${chalk.bold.gray('\u2718')}  ${chalk.bold(name)}`)
-
-            logUpdate.done()
-          }
-        })
+          })
       })
     }, Promise.resolve())
   })

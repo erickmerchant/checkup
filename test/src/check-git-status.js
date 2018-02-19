@@ -32,9 +32,9 @@ test('test src/check-git-status - no results', function (t) {
 
     mockery.deregisterAll()
   })
-  .catch(function (err) {
-    t.notOk(err)
-  })
+    .catch(function (err) {
+      t.notOk(err)
+    })
 })
 
 test('test src/check-git-status - results', function (t) {
@@ -68,9 +68,9 @@ test('test src/check-git-status - results', function (t) {
 
     mockery.deregisterAll()
   })
-  .catch(function (err) {
-    t.notOk(err)
-  })
+    .catch(function (err) {
+      t.notOk(err)
+    })
 })
 
 test('test src/check-git-status - no .git', function (t) {
@@ -104,7 +104,7 @@ test('test src/check-git-status - no .git', function (t) {
 
     mockery.deregisterAll()
   })
-  .catch(function (err) {
-    t.notOk(err)
-  })
+    .catch(function (err) {
+      t.notOk(err)
+    })
 })
