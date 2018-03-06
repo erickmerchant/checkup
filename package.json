@@ -17,13 +17,13 @@
   "author": "Erick Merchant <erickmerchant@gmail.com>",
   "license": "ISC",
   "dependencies": {
-    "chalk": "^2.3.1",
+    "chalk": "^2.3.2",
     "cli-spinners": "^1.1.0",
     "execa": "^0.9.0",
     "glob": "^7.1.2",
     "log-update": "^2.3.0",
     "semver": "^5.5.0",
-    "sergeant": "^17.2.3",
+    "sergeant": "^17.2.4",
     "thenify": "^3.3.0"
   },
   "devDependencies": {
