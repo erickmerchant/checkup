@@ -31,7 +31,7 @@ module.exports = function (directory) {
                 }
 
                 if (next != null && next !== current) {
-                  if (semver.diff(next, current) === 'major') {
+                  if (semver.diff(next, current) === 'major' || semver.major(current) < 1) {
                     results.push('upgrade ' + dependency)
                   } else if (!semver.lt(next, current)) {
                     results.push('update ' + dependency)
