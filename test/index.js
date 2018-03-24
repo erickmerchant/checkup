@@ -40,7 +40,7 @@ test('test src/action - no results', function (t) {
   t.plan(1)
 
   require('../')({
-    directory: ['./*/']
+    directory: './'
   }).then(function () {
     t.deepEqual(logged, [
       chalk.bold.gray('\u2718') + '  ' + chalk.bold('test')
@@ -90,7 +90,7 @@ test('test src/action - zero length results', function (t) {
   t.plan(1)
 
   require('../')({
-    directory: ['./*/']
+    directory: './'
   }).then(function () {
     t.deepEqual(logged, [
       chalk.bold.green('\u2714') + '  ' + chalk.bold('test')
@@ -140,7 +140,7 @@ test('test src/action - non-zero length results', function (t) {
   t.plan(1)
 
   require('../')({
-    directory: ['./*/']
+    directory: './'
   }).then(function () {
     t.deepEqual(logged, [
       chalk.bold.red('\u2718') + '  ' + chalk.bold('test'),

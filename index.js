@@ -11,14 +11,7 @@ const logUpdate = require('log-update')
 const dots = require('cli-spinners').dots2
 
 module.exports = function (args) {
-  const directoryPromise = Promise.all(args.directory.map((directory) => glob(directory)))
-    .then(function (directories) {
-      return directories
-        .reduce((directories, current) => directories.concat(current.filter((directory) => !directories.includes(directory))), [])
-        .map((directory) => path.join(process.cwd(), directory))
-    })
-
-  return directoryPromise.then(function (directories) {
+  return glob(path.join(process.cwd(), args.directory, '*/')).then(function (directories) {
     return directories.reduce(function (acc, directory) {
       return acc.then(function () {
         const name = path.relative(process.cwd(), directory) || '.'
