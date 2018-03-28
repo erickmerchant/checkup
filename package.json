@@ -23,7 +23,7 @@
     "glob": "^7.1.2",
     "log-update": "^2.3.0",
     "semver": "^5.5.0",
-    "sergeant": "^17.2.4",
+    "sergeant": "^17.2.5",
     "thenify": "^3.3.0"
   },
   "devDependencies": {
