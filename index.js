@@ -34,9 +34,9 @@ module.exports = function (args) {
 
                 logUpdate.done()
 
-                results.forEach(function (result) {
+                for (let result of results) {
                   console.log(chalk.gray('  - ' + result))
-                })
+                }
               } else {
                 logUpdate(`${chalk.bold.green('\u2714')}  ${chalk.bold(name)}`)
 

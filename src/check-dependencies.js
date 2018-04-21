@@ -19,7 +19,7 @@ module.exports = function (directory) {
           .then(function (result) {
             const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-            Object.keys(outdated).forEach(function (dependency) {
+            for (let dependency of Object.keys(outdated)) {
               const latest = outdated[dependency].latest
               const current = locked.dependencies[dependency].version
 
@@ -40,7 +40,7 @@ module.exports = function (directory) {
               } catch (e) {
                 results.push('linked ' + dependency)
               }
-            })
+            }
 
             resolve(results)
           })
