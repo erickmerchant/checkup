@@ -5,7 +5,11 @@ const command = require('sergeant')
 command('checkup', function ({parameter}) {
   parameter('directory', {
     description: 'optional directories to look at',
-    default: './'
+    type: function (val) {
+      if (val == null) return './'
+
+      return val
+    }
   })
 
   return action
