@@ -5,8 +5,8 @@ const clearInterval = globals.clearInterval
 const checks = require('./src/checks')
 const chalk = require('chalk')
 const path = require('path')
-const thenify = require('thenify')
-const glob = thenify(require('glob'))
+const promisify = require('util').promisify
+const glob = promisify(require('glob'))
 const logUpdate = require('log-update')
 const dots = require('cli-spinners').dots2
 
