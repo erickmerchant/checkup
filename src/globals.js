@@ -1,5 +1,3 @@
 module.exports = {
-  console,
-  setInterval,
-  clearInterval
+  stdout: process.stdout
 }
