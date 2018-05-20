@@ -23,7 +23,7 @@
     "glob": "^7.1.2",
     "log-update": "^2.3.0",
     "semver": "^5.5.0",
-    "sergeant": "^19.0.0"
+    "sergeant": "^19.1.0"
   },
   "devDependencies": {
     "mockery": "^2.0.0",
