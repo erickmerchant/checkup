@@ -1,7 +1,7 @@
 const test = require('tape')
 const mockery = require('mockery')
 
-test('test src/check-dependencies - no package.json', function (t) {
+test('test src/check-npm-audit - no package.json', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
@@ -17,7 +17,7 @@ test('test src/check-dependencies - no package.json', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkDependencies = require('../../src/check-dependencies')
+  const checkDependencies = require('../../src/check-npm-audit')
 
   t.plan(1)
 
@@ -30,24 +30,26 @@ test('test src/check-dependencies - no package.json', function (t) {
   })
 })
 
-test('test src/check-dependencies - no results', function (t) {
+test('test src/check-npm-audit - no results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('test/package-lock.json', {
-    dependencies: {
-      foo: {
-        version: '1.0.0'
-      }
-    }
-  })
-
   mockery.registerMock('execa', function () {
     return Promise.resolve({
-      stdout: ''
+      stdout: `{
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0
+          }
+        }
+      }`
     })
   })
 
@@ -58,7 +60,7 @@ test('test src/check-dependencies - no results', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkDependencies = require('../../src/check-dependencies')
+  const checkDependencies = require('../../src/check-npm-audit')
 
   t.plan(1)
 
@@ -71,26 +73,24 @@ test('test src/check-dependencies - no results', function (t) {
   })
 })
 
-test('test src/check-dependencies - upgrade', function (t) {
+test('test src/check-npm-audit - 1 result', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('test/package-lock.json', {
-    dependencies: {
-      foo: {
-        version: '1.0.0'
-      }
-    }
-  })
-
   mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: `{
-        "foo": {
-          "wanted": "2.0.0"
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 1
+          }
         }
       }`
     })
@@ -103,12 +103,12 @@ test('test src/check-dependencies - upgrade', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkDependencies = require('../../src/check-dependencies')
+  const checkDependencies = require('../../src/check-npm-audit')
 
   t.plan(1)
 
   checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['upgrade foo'])
+    t.deepEqual(results, ['1 critical vulnerability'])
 
     mockery.disable()
 
@@ -116,26 +116,24 @@ test('test src/check-dependencies - upgrade', function (t) {
   })
 })
 
-test('test src/check-dependencies - update', function (t) {
+test('test src/check-npm-audit - 2 results', function (t) {
   mockery.enable({
     useCleanCache: true,
     warnOnReplace: false,
     warnOnUnregistered: false
   })
 
-  mockery.registerMock('test/package-lock.json', {
-    dependencies: {
-      foo: {
-        version: '1.0.0'
-      }
-    }
-  })
-
   mockery.registerMock('execa', function () {
     return Promise.resolve({
       stdout: `{
-        "foo": {
-          "wanted": "1.1.0"
+        "metadata": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 2
+          }
         }
       }`
     })
@@ -148,12 +146,12 @@ test('test src/check-dependencies - update', function (t) {
     constants: { R_OK: true }
   })
 
-  const checkDependencies = require('../../src/check-dependencies')
+  const checkDependencies = require('../../src/check-npm-audit')
 
   t.plan(1)
 
   checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['update foo'])
+    t.deepEqual(results, ['2 critical vulnerabilities'])
 
     mockery.disable()
 
