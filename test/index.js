@@ -31,14 +31,10 @@ test('test src/action - zero length results', function (t) {
     return Promise.resolve([])
   })
 
-  mockery.registerMock('glob', function (dir, callback) {
-    callback(null, ['test'])
-  })
-
   t.plan(2)
 
   require('../')({
-    directory: './'
+    directory: ['test']
   }).then(function () {
     t.deepEqual(logged, [
       chalk.green('test') + '\n'
@@ -79,14 +75,10 @@ test('test src/action - non-zero length results', function (t) {
     return Promise.resolve(['test'])
   })
 
-  mockery.registerMock('glob', function (dir, callback) {
-    callback(null, ['test'])
-  })
-
   t.plan(2)
 
   require('../')({
-    directory: './'
+    directory: ['test']
   }).then(function () {
     t.deepEqual(logged, [
       chalk.red('test') + '\n',
