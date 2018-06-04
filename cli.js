@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 const action = require('./index')
 const command = require('sergeant')
-const promisify = require('util').promisify
-const glob = promisify(require('glob'))
 
 command('checkup', function ({parameter}) {
   parameter('directory', {
@@ -10,10 +8,6 @@ command('checkup', function ({parameter}) {
     required: true,
     multiple: true,
     type: function directory (val) {
-      if (val == null) {
-        return glob('./*/')
-      }
-
       return val
     }
   })

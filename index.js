@@ -1,6 +1,6 @@
+const checks = require('./src/checks')
 const globals = require('./src/globals')
 const stdout = globals.stdout
-const checks = require('./src/checks')
 const chalk = require('chalk')
 const path = require('path')
 const ora = require('ora')

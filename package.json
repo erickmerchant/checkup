@@ -19,10 +19,9 @@
   "dependencies": {
     "chalk": "^2.4.1",
     "execa": "^0.10.0",
-    "glob": "^7.1.2",
     "ora": "^2.1.0",
     "semver": "^5.5.0",
-    "sergeant": "^19.2.0"
+    "sergeant": "^19.3.0"
   },
   "devDependencies": {
     "mockery": "^2.0.0",
