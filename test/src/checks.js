@@ -14,7 +14,19 @@ test('test src/checks', function (t) {
     }
   })
 
-  mockery.registerMock('./check-dependencies', function () {
+  mockery.registerMock('./check-npm-outdated', function () {
+    return function (results) {
+      return Promise.resolve(results)
+    }
+  })
+
+  mockery.registerMock('./check-npm-audit', function () {
+    return function (results) {
+      return Promise.resolve(results)
+    }
+  })
+
+  mockery.registerMock('./check-npm-tst', function () {
     return function (results) {
       return Promise.resolve(results)
     }
