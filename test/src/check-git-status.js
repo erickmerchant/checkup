@@ -46,7 +46,7 @@ test('test src/check-git-status - results', function (t) {
 
   mockery.registerMock('execa', function () {
     return Promise.resolve({
-      stdout: 'M  foo'
+      stdout: '## develop...origin/develop\nM  foo'
     })
   })
 
@@ -62,7 +62,7 @@ test('test src/check-git-status - results', function (t) {
   t.plan(1)
 
   checkGitStatus('test')([]).then(function (results) {
-    t.deepEqual(results, [ 'working directory unclean' ])
+    t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
 
     mockery.disable()
 

@@ -14,9 +14,13 @@ module.exports = function (directory) {
 
         execa('git', ['status', '--porcelain', '-b'], {cwd: directory, reject: false})
           .then(function (result) {
-            const outdated = result.stdout
+            const outdated = result.stdout.split('\n')
 
-            if (outdated !== '## master...origin/master') {
+            if (outdated[0] !== '## master...origin/master') {
+              results.push('not on master')
+            }
+
+            if (outdated.length > 1) {
               results.push('working directory unclean')
             }
 
