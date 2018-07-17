@@ -16,8 +16,10 @@ module.exports = function (directory) {
           .then(function (result) {
             const outdated = result.stdout.split('\n')
 
-            if (outdated[0] !== '## master...origin/master') {
+            if (!outdated[0].startsWith('## master...origin/master')) {
               results.push('not on master')
+            } else if (outdated[0] !== '## master...origin/master') {
+              results.push('ahead of master')
             }
 
             if (outdated.length > 1) {
