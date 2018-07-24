@@ -7,9 +7,7 @@ command('checkup', function ({parameter}) {
     description: 'directories to look at',
     required: true,
     multiple: true,
-    type: function directory (val) {
-      return val
-    }
+    type (val) { return val }
   })
 
   return action

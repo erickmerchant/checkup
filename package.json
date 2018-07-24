@@ -21,7 +21,7 @@
     "execa": "^0.10.0",
     "ora": "^3.0.0",
     "semver": "^5.5.0",
-    "sergeant": "^21.0.0"
+    "sergeant": "^22.0.0"
   },
   "devDependencies": {
     "mockery": "^2.0.0",
