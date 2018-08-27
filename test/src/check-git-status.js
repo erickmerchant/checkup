@@ -1,36 +1,25 @@
 const test = require('tape')
-const mockery = require('mockery')
+const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test src/check-git-status - no results', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('execa', function () {
-    return Promise.resolve({
-      stdout: '## master...origin/master'
-    })
-  })
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(null)
+  const checkGitStatus = proxyquire('../../src/check-git-status', {
+    'execa': function () {
+      return Promise.resolve({
+        stdout: '## master...origin/master'
+      })
     },
-    constants: { R_OK: true }
+    'fs': {
+      access (file, mode, callback) {
+        callback(null)
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
   checkGitStatus('test')([]).then(function (results) {
     t.deepEqual(results, [])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
     .catch(function (err) {
       t.notOk(err)
@@ -38,35 +27,24 @@ test('test src/check-git-status - no results', function (t) {
 })
 
 test('test src/check-git-status - results', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('execa', function () {
-    return Promise.resolve({
-      stdout: '## develop...origin/develop\nM  foo'
-    })
-  })
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(null)
+  const checkGitStatus = proxyquire('../../src/check-git-status', {
+    'execa': function () {
+      return Promise.resolve({
+        stdout: '## develop...origin/develop\nM  foo'
+      })
     },
-    constants: { R_OK: true }
+    'fs': {
+      access (file, mode, callback) {
+        callback(null)
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
   checkGitStatus('test')([]).then(function (results) {
     t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
     .catch(function (err) {
       t.notOk(err)
@@ -74,35 +52,24 @@ test('test src/check-git-status - results', function (t) {
 })
 
 test('test src/check-git-status - no .git', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('execa', function () {
-    return Promise.resolve({
-      stdout: '## master...origin/master'
-    })
-  })
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(new Error('test'))
+  const checkGitStatus = proxyquire('../../src/check-git-status', {
+    'execa': function () {
+      return Promise.resolve({
+        stdout: '## master...origin/master'
+      })
     },
-    constants: { R_OK: true }
+    'fs': {
+      access (file, mode, callback) {
+        callback(new Error('test'))
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  const checkGitStatus = require('../../src/check-git-status')
 
   t.plan(1)
 
   checkGitStatus('test')([]).then(function (results) {
     t.deepEqual(results, [])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
     .catch(function (err) {
       t.notOk(err)

@@ -1,44 +1,31 @@
 const test = require('tape')
-const mockery = require('mockery')
+const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test src/checks', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('./check-git-status', function () {
-    return function (results) {
-      return Promise.resolve(results)
-    }
-  })
-
-  mockery.registerMock('./check-npm-outdated', function () {
-    return function (results) {
-      return Promise.resolve(results)
-    }
-  })
-
-  mockery.registerMock('./check-npm-audit', function () {
-    return function (results) {
-      return Promise.resolve(results)
-    }
-  })
-
-  mockery.registerMock('./check-npm-tst', function () {
-    return function (results) {
-      return Promise.resolve(results)
-    }
-  })
-
   t.plan(1)
 
-  require('../../src/checks')('test', {}).then(function (results) {
+  proxyquire('../../src/checks', {
+    './check-git-status': function () {
+      return function (results) {
+        return Promise.resolve(results)
+      }
+    },
+    './check-npm-outdated': function () {
+      return function (results) {
+        return Promise.resolve(results)
+      }
+    },
+    './check-npm-audit': function () {
+      return function (results) {
+        return Promise.resolve(results)
+      }
+    },
+    './check-npm-tst': function () {
+      return function (results) {
+        return Promise.resolve(results)
+      }
+    }
+  })('test', {}).then(function (results) {
     t.deepEqual(results, [])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
 })

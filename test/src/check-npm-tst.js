@@ -1,93 +1,60 @@
 const test = require('tape')
-const mockery = require('mockery')
+const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test src/check-npm-tst - no package.json', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
+  const npmTest = proxyquire('../../src/check-npm-tst', {
+    'execa': {},
+    'fs': {
+      access (file, mode, callback) {
+        callback(new Error('test'))
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  mockery.registerMock('execa', {})
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(new Error('test'))
-    },
-    constants: { R_OK: true }
-  })
-
-  const npmTest = require('../../src/check-npm-tst')
 
   t.plan(1)
 
   npmTest('test')([]).then(function (results) {
     t.deepEqual(results, [])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
 })
 
 test('test src/check-npm-tst - no results', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('execa', function () {
-    return Promise.resolve({})
-  })
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(null)
+  const npmTest = proxyquire('../../src/check-npm-tst', {
+    'execa': function () {
+      return Promise.resolve({})
     },
-    constants: { R_OK: true }
+    'fs': {
+      access (file, mode, callback) {
+        callback(null)
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  const npmTest = require('../../src/check-npm-tst')
 
   t.plan(1)
 
   npmTest('test')([]).then(function (results) {
     t.deepEqual(results, [])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
 })
 
 test('test src/check-npm-tst - tests failing', function (t) {
-  mockery.enable({
-    useCleanCache: true,
-    warnOnReplace: false,
-    warnOnUnregistered: false
-  })
-
-  mockery.registerMock('execa', function () {
-    return Promise.resolve(new Error('not ok'))
-  })
-
-  mockery.registerMock('fs', {
-    access (file, mode, callback) {
-      callback(null)
+  const npmTest = proxyquire('../../src/check-npm-tst', {
+    'execa': function () {
+      return Promise.resolve(new Error('not ok'))
     },
-    constants: { R_OK: true }
+    'fs': {
+      access (file, mode, callback) {
+        callback(null)
+      },
+      constants: { R_OK: true }
+    }
   })
-
-  const npmTest = require('../../src/check-npm-tst')
 
   t.plan(1)
 
   npmTest('test')([]).then(function (results) {
     t.deepEqual(results, ['tests failing'])
-
-    mockery.disable()
-
-    mockery.deregisterAll()
   })
 })
