@@ -8,7 +8,7 @@ test('test src/action - zero length results', function (t) {
   t.plan(2)
 
   proxyquire('../', {
-    'ora': function ({stream, text}) {
+    'ora': function ({ stream, text }) {
       return {
         start () { t.ok(true) },
         fail () { stream.write(chalk.red(text) + '\n') },
@@ -40,7 +40,7 @@ test('test src/action - non-zero length results', function (t) {
   t.plan(2)
 
   proxyquire('../', {
-    'ora': function ({stream, text}) {
+    'ora': function ({ stream, text }) {
       return {
         start () { t.ok(true) },
         fail () { stream.write(chalk.red(text) + '\n') },

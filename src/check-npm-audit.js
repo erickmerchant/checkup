@@ -12,7 +12,7 @@ module.exports = function (directory) {
           return
         }
 
-        execa('npm', ['audit', '--json'], {cwd: directory, reject: false})
+        execa('npm', ['audit', '--json'], { cwd: directory, reject: false })
           .then(function (result) {
             const report = result.stdout ? JSON.parse(result.stdout) : {}
 

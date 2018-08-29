@@ -2,7 +2,7 @@
 const action = require('./index')
 const command = require('sergeant')
 
-command('checkup', function ({parameter}) {
+command('checkup', function ({ parameter }) {
   parameter('directory', {
     description: 'directories to look at',
     required: true,

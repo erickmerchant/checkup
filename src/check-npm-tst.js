@@ -12,7 +12,7 @@ module.exports = function (directory) {
           return
         }
 
-        execa('npm', ['test'], {cwd: directory, reject: false})
+        execa('npm', ['test'], { cwd: directory, reject: false })
           .then(function (result) {
             if (result != null && result instanceof Error) {
               results.push('tests failing')

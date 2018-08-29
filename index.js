@@ -9,7 +9,7 @@ module.exports = function (args) {
   return args.directory.reduce(function (acc, directory) {
     return acc.then(function () {
       const name = path.relative(process.cwd(), directory) || '.'
-      const oraInstance = ora({stream: stdout, text: name})
+      const oraInstance = ora({ stream: stdout, text: name })
 
       oraInstance.start()
 

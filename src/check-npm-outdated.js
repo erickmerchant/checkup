@@ -15,7 +15,7 @@ module.exports = function (directory) {
 
         const locked = require(path.join(directory, 'package-lock.json'))
 
-        execa('npm', ['outdated', '--json'], {cwd: directory, reject: false})
+        execa('npm', ['outdated', '--json'], { cwd: directory, reject: false })
           .then(function (result) {
             const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 

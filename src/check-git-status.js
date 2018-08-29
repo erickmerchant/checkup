@@ -12,7 +12,7 @@ module.exports = function (directory) {
           return
         }
 
-        execa('git', ['status', '--porcelain', '-b'], {cwd: directory, reject: false})
+        execa('git', ['status', '--porcelain', '-b'], { cwd: directory, reject: false })
           .then(function (result) {
             const outdated = result.stdout.split('\n')
 
