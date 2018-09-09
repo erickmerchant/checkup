@@ -1,12 +1,12 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-git-status - no results', function (t) {
+test('test src/check-git-status - no results', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: '## master...origin/master'
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -18,20 +18,17 @@ test('test src/check-git-status - no results', function (t) {
 
   t.plan(1)
 
-  checkGitStatus('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
-    .catch(function (err) {
-      t.notOk(err)
-    })
+  const results = await checkGitStatus('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-git-status - results', function (t) {
+test('test src/check-git-status - results', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: '## develop...origin/develop\nM  foo'
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -43,20 +40,17 @@ test('test src/check-git-status - results', function (t) {
 
   t.plan(1)
 
-  checkGitStatus('test')([]).then(function (results) {
-    t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
-  })
-    .catch(function (err) {
-      t.notOk(err)
-    })
+  const results = await checkGitStatus('test')([])
+
+  t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
 })
 
-test('test src/check-git-status - no .git', function (t) {
+test('test src/check-git-status - no .git', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: '## master...origin/master'
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -68,10 +62,7 @@ test('test src/check-git-status - no .git', function (t) {
 
   t.plan(1)
 
-  checkGitStatus('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
-    .catch(function (err) {
-      t.notOk(err)
-    })
+  const results = await checkGitStatus('test')([])
+
+  t.deepEqual(results, [])
 })

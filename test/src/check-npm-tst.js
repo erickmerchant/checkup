@@ -1,7 +1,7 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-npm-tst - no package.json', function (t) {
+test('test src/check-npm-tst - no package.json', async (t) => {
   const npmTest = proxyquire('../../src/check-npm-tst', {
     'execa': {},
     'fs': {
@@ -14,15 +14,15 @@ test('test src/check-npm-tst - no package.json', function (t) {
 
   t.plan(1)
 
-  npmTest('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await npmTest('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-tst - no results', function (t) {
+test('test src/check-npm-tst - no results', async (t) => {
   const npmTest = proxyquire('../../src/check-npm-tst', {
-    'execa': function () {
-      return Promise.resolve({})
+    'execa': async () => {
+      return {}
     },
     'fs': {
       access (file, mode, callback) {
@@ -34,15 +34,15 @@ test('test src/check-npm-tst - no results', function (t) {
 
   t.plan(1)
 
-  npmTest('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await npmTest('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-tst - tests failing', function (t) {
+test('test src/check-npm-tst - tests failing', async (t) => {
   const npmTest = proxyquire('../../src/check-npm-tst', {
-    'execa': function () {
-      return Promise.resolve(new Error('not ok'))
+    'execa': async () => {
+      return new Error('not ok')
     },
     'fs': {
       access (file, mode, callback) {
@@ -54,7 +54,7 @@ test('test src/check-npm-tst - tests failing', function (t) {
 
   t.plan(1)
 
-  npmTest('test')([]).then(function (results) {
-    t.deepEqual(results, ['tests failing'])
-  })
+  const results = await npmTest('test')([])
+
+  t.deepEqual(results, ['tests failing'])
 })

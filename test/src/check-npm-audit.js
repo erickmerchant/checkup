@@ -1,7 +1,7 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-npm-audit - no package.json', function (t) {
+test('test src/check-npm-audit - no package.json', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
     'execa': {},
     'fs': {
@@ -14,15 +14,15 @@ test('test src/check-npm-audit - no package.json', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-audit - no results', function (t) {
+test('test src/check-npm-audit - no results', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: `{
           "metadata": {
             "vulnerabilities": {
@@ -34,7 +34,7 @@ test('test src/check-npm-audit - no results', function (t) {
             }
           }
         }`
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -46,15 +46,15 @@ test('test src/check-npm-audit - no results', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-audit - 1 result', function (t) {
+test('test src/check-npm-audit - 1 result', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: `{
           "metadata": {
             "vulnerabilities": {
@@ -66,7 +66,7 @@ test('test src/check-npm-audit - 1 result', function (t) {
             }
           }
         }`
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -78,15 +78,15 @@ test('test src/check-npm-audit - 1 result', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['1 critical vulnerability'])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, ['1 critical vulnerability'])
 })
 
-test('test src/check-npm-audit - 2 results', function (t) {
+test('test src/check-npm-audit - 2 results', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: `{
           "metadata": {
             "vulnerabilities": {
@@ -98,7 +98,7 @@ test('test src/check-npm-audit - 2 results', function (t) {
             }
           }
         }`
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -110,7 +110,7 @@ test('test src/check-npm-audit - 2 results', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['2 critical vulnerabilities'])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, ['2 critical vulnerabilities'])
 })

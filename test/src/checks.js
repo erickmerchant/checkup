@@ -1,31 +1,23 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/checks', function (t) {
+test('test src/checks', async (t) => {
   t.plan(1)
 
-  proxyquire('../../src/checks', {
-    './check-git-status': function () {
-      return function (results) {
-        return Promise.resolve(results)
-      }
+  const results = await proxyquire('../../src/checks', {
+    './check-git-status': () => async (results) => {
+      return results
     },
-    './check-npm-outdated': function () {
-      return function (results) {
-        return Promise.resolve(results)
-      }
+    './check-npm-outdated': () => async (results) => {
+      return results
     },
-    './check-npm-audit': function () {
-      return function (results) {
-        return Promise.resolve(results)
-      }
+    './check-npm-audit': () => async (results) => {
+      return results
     },
-    './check-npm-tst': function () {
-      return function (results) {
-        return Promise.resolve(results)
-      }
+    './check-npm-tst': () => async (results) => {
+      return results
     }
-  })('test', {}).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  })('test', {})
+
+  t.deepEqual(results, [])
 })

@@ -5,26 +5,25 @@ const chalk = require('chalk')
 const path = require('path')
 const ora = require('ora')
 
-module.exports = function (args) {
-  return args.directory.reduce(function (acc, directory) {
-    return acc.then(function () {
-      const name = path.relative(process.cwd(), directory) || '.'
-      const oraInstance = ora({ stream: stdout, text: name })
+module.exports = (args) => {
+  return args.directory.reduce(async (acc, directory) => {
+    await acc
 
-      oraInstance.start()
+    const name = path.relative(process.cwd(), directory) || '.'
+    const oraInstance = ora({ stream: stdout, text: name })
 
-      return checks(path.join(process.cwd(), directory), args)
-        .then(function (results) {
-          if (results.length) {
-            oraInstance.fail()
+    oraInstance.start()
 
-            for (let result of results) {
-              stdout.write(chalk.gray('  - ' + result) + '\n')
-            }
-          } else {
-            oraInstance.succeed()
-          }
-        })
-    })
-  }, Promise.resolve())
+    const results = await checks(path.join(process.cwd(), directory), args)
+
+    if (results.length) {
+      oraInstance.fail()
+
+      for (let result of results) {
+        stdout.write(chalk.gray('  - ' + result) + '\n')
+      }
+    } else {
+      oraInstance.succeed()
+    }
+  }, Promise.resolve(null))
 }

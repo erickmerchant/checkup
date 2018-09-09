@@ -1,7 +1,7 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache().noCallThru()
 
-test('test src/check-npm-outdated - no package.json', function (t) {
+test('test src/check-npm-outdated - no package.json', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-outdated', {
     'execa': {},
     'fs': {
@@ -14,12 +14,12 @@ test('test src/check-npm-outdated - no package.json', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-outdated - no results', function (t) {
+test('test src/check-npm-outdated - no results', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-outdated', {
     'test/package-lock.json': {
       dependencies: {
@@ -28,10 +28,10 @@ test('test src/check-npm-outdated - no results', function (t) {
         }
       }
     },
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: ''
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -43,12 +43,12 @@ test('test src/check-npm-outdated - no results', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, [])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, [])
 })
 
-test('test src/check-npm-outdated - upgrade', function (t) {
+test('test src/check-npm-outdated - upgrade', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-outdated', {
     'test/package-lock.json': {
       dependencies: {
@@ -57,14 +57,14 @@ test('test src/check-npm-outdated - upgrade', function (t) {
         }
       }
     },
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: `{
           "foo": {
             "wanted": "2.0.0"
           }
         }`
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -76,12 +76,12 @@ test('test src/check-npm-outdated - upgrade', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['upgrade foo'])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, ['upgrade foo'])
 })
 
-test('test src/check-npm-outdated - update', function (t) {
+test('test src/check-npm-outdated - update', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-outdated', {
     'test/package-lock.json': {
       dependencies: {
@@ -90,14 +90,14 @@ test('test src/check-npm-outdated - update', function (t) {
         }
       }
     },
-    'execa': function () {
-      return Promise.resolve({
+    'execa': async () => {
+      return {
         stdout: `{
           "foo": {
             "wanted": "1.1.0"
           }
         }`
-      })
+      }
     },
     'fs': {
       access (file, mode, callback) {
@@ -109,7 +109,7 @@ test('test src/check-npm-outdated - update', function (t) {
 
   t.plan(1)
 
-  checkDependencies('test')([]).then(function (results) {
-    t.deepEqual(results, ['update foo'])
-  })
+  const results = await checkDependencies('test')([])
+
+  t.deepEqual(results, ['update foo'])
 })

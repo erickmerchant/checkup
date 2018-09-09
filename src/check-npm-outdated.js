@@ -3,49 +3,45 @@ const path = require('path')
 const semver = require('semver')
 const execa = require('execa')
 
-module.exports = function (directory) {
-  return function (results) {
-    return new Promise(function (resolve, reject) {
-      fs.access(path.join(directory, 'package-lock.json'), fs.constants.R_OK, function (err) {
-        if (err) {
-          resolve(results)
+module.exports = (directory) => (results) => {
+  return new Promise((resolve, reject) => {
+    fs.access(path.join(directory, 'package-lock.json'), fs.constants.R_OK, async (err) => {
+      if (err) {
+        resolve(results)
 
-          return
-        }
+        return
+      }
 
-        const locked = require(path.join(directory, 'package-lock.json'))
+      const locked = require(path.join(directory, 'package-lock.json'))
 
-        execa('npm', ['outdated', '--json'], { cwd: directory, reject: false })
-          .then(function (result) {
-            const outdated = result.stdout ? JSON.parse(result.stdout) : {}
+      const result = await execa('npm', ['outdated', '--json'], { cwd: directory, reject: false })
 
-            for (let dependency of Object.keys(outdated)) {
-              const latest = outdated[dependency].latest
-              const current = locked.dependencies[dependency].version
+      const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-              let next = outdated[dependency].wanted
+      for (let dependency of Object.keys(outdated)) {
+        const latest = outdated[dependency].latest
+        const current = locked.dependencies[dependency].version
 
-              try {
-                if (latest != null && semver.prerelease(latest) == null) {
-                  next = latest
-                }
+        let next = outdated[dependency].wanted
 
-                if (next != null && next !== current) {
-                  if (semver.diff(next, current) === 'major' || semver.major(current) < 1) {
-                    results.push('upgrade ' + dependency)
-                  } else if (!semver.lt(next, current)) {
-                    results.push('update ' + dependency)
-                  }
-                }
-              } catch (e) {
-                results.push('linked ' + dependency)
-              }
+        try {
+          if (latest != null && semver.prerelease(latest) == null) {
+            next = latest
+          }
+
+          if (next != null && next !== current) {
+            if (semver.diff(next, current) === 'major' || semver.major(current) < 1) {
+              results.push('upgrade ' + dependency)
+            } else if (!semver.lt(next, current)) {
+              results.push('update ' + dependency)
             }
+          }
+        } catch (e) {
+          results.push('linked ' + dependency)
+        }
+      }
 
-            resolve(results)
-          })
-          .catch(reject)
-      })
+      resolve(results)
     })
-  }
+  })
 }

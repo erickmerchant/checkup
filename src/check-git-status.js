@@ -2,34 +2,30 @@ const fs = require('fs')
 const path = require('path')
 const execa = require('execa')
 
-module.exports = function (directory) {
-  return function (results) {
-    return new Promise(function (resolve, reject) {
-      fs.access(path.join(directory, '.git'), fs.constants.R_OK, function (err) {
-        if (err) {
-          resolve(results)
+module.exports = (directory) => (results) => {
+  return new Promise((resolve, reject) => {
+    fs.access(path.join(directory, '.git'), fs.constants.R_OK, async (err) => {
+      if (err) {
+        resolve(results)
 
-          return
-        }
+        return
+      }
 
-        execa('git', ['status', '--porcelain', '-b'], { cwd: directory, reject: false })
-          .then(function (result) {
-            const outdated = result.stdout.split('\n')
+      const result = await execa('git', ['status', '--porcelain', '-b'], { cwd: directory, reject: false })
 
-            if (!outdated[0].startsWith('## master...origin/master')) {
-              results.push('not on master')
-            } else if (outdated[0] !== '## master...origin/master') {
-              results.push('ahead of master')
-            }
+      const outdated = result.stdout.split('\n')
 
-            if (outdated.length > 1) {
-              results.push('working directory unclean')
-            }
+      if (!outdated[0].startsWith('## master...origin/master')) {
+        results.push('not on master')
+      } else if (outdated[0] !== '## master...origin/master') {
+        results.push('ahead of master')
+      }
 
-            resolve(results)
-          })
-          .catch(reject)
-      })
+      if (outdated.length > 1) {
+        results.push('working directory unclean')
+      }
+
+      resolve(results)
     })
-  }
+  })
 }
