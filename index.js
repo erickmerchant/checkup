@@ -7,11 +7,11 @@ const ora = require('ora')
 const error = require('sergeant/error')
 
 module.exports = async (args) => {
-  try {
-    for (const directory of args.directory) {
-      const name = path.relative(process.cwd(), directory) || '.'
-      const oraInstance = ora({ stream: stdout, text: name })
+  for (const directory of args.directory) {
+    const name = path.relative(process.cwd(), directory) || '.'
+    const oraInstance = ora({ stream: stdout, text: name })
 
+    try {
       oraInstance.start()
 
       const results = await checks(path.join(process.cwd(), directory), args)
@@ -25,8 +25,10 @@ module.exports = async (args) => {
       } else {
         oraInstance.succeed()
       }
+    } catch (err) {
+      error(err)
+
+      oraInstance.fail()
     }
-  } catch (err) {
-    error(err)
   }
 }
