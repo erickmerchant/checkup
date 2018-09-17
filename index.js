@@ -4,26 +4,29 @@ const stdout = globals.stdout
 const chalk = require('chalk')
 const path = require('path')
 const ora = require('ora')
+const error = require('sergeant/error')
 
-module.exports = (args) => {
-  return args.directory.reduce(async (acc, directory) => {
-    await acc
+module.exports = async (args) => {
+  try {
+    for (const directory of args.directory) {
+      const name = path.relative(process.cwd(), directory) || '.'
+      const oraInstance = ora({ stream: stdout, text: name })
 
-    const name = path.relative(process.cwd(), directory) || '.'
-    const oraInstance = ora({ stream: stdout, text: name })
+      oraInstance.start()
 
-    oraInstance.start()
+      const results = await checks(path.join(process.cwd(), directory), args)
 
-    const results = await checks(path.join(process.cwd(), directory), args)
+      if (results.length) {
+        oraInstance.fail()
 
-    if (results.length) {
-      oraInstance.fail()
-
-      for (let result of results) {
-        stdout.write(chalk.gray('  - ' + result) + '\n')
+        for (let result of results) {
+          stdout.write(chalk.gray('  - ' + result) + '\n')
+        }
+      } else {
+        oraInstance.succeed()
       }
-    } else {
-      oraInstance.succeed()
     }
-  }, Promise.resolve(null))
+  } catch (err) {
+    error(err)
+  }
 }
