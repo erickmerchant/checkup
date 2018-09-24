@@ -3,8 +3,8 @@ const proxyquire = require('proxyquire').noPreserveCache().noCallThru()
 
 test('test src/check-npm-outdated - no package.json', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-outdated', {
-    'execa': {},
-    'fs': {
+    execa: {},
+    fs: {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
@@ -28,12 +28,12 @@ test('test src/check-npm-outdated - no results', async (t) => {
         }
       }
     },
-    'execa': async () => {
+    async execa () {
       return {
         stdout: ''
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(null)
       },
@@ -57,7 +57,7 @@ test('test src/check-npm-outdated - upgrade', async (t) => {
         }
       }
     },
-    'execa': async () => {
+    async execa () {
       return {
         stdout: `{
           "foo": {
@@ -66,7 +66,7 @@ test('test src/check-npm-outdated - upgrade', async (t) => {
         }`
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(null)
       },
@@ -90,7 +90,7 @@ test('test src/check-npm-outdated - update', async (t) => {
         }
       }
     },
-    'execa': async () => {
+    async execa () {
       return {
         stdout: `{
           "foo": {
@@ -99,7 +99,7 @@ test('test src/check-npm-outdated - update', async (t) => {
         }`
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(null)
       },

@@ -8,7 +8,7 @@ test('test src/action - zero length results', async (t) => {
   t.plan(2)
 
   await proxyquire('../', {
-    'ora' ({ stream, text }) {
+    ora ({ stream, text }) {
       return {
         start () { t.ok(true) },
         fail () { stream.write(chalk.red(text) + '\n') },
@@ -22,7 +22,7 @@ test('test src/action - zero length results', async (t) => {
         }
       }
     },
-    './src/checks': async () => {
+    async './src/checks' () {
       return []
     }
   })({
@@ -40,7 +40,7 @@ test('test src/action - non-zero length results', async (t) => {
   t.plan(2)
 
   await proxyquire('../', {
-    'ora' ({ stream, text }) {
+    ora ({ stream, text }) {
       return {
         start () { t.ok(true) },
         fail () { stream.write(chalk.red(text) + '\n') },
@@ -54,7 +54,7 @@ test('test src/action - non-zero length results', async (t) => {
         }
       }
     },
-    './src/checks': async () => {
+    async './src/checks' () {
       return ['test']
     }
   })({

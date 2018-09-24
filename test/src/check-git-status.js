@@ -3,12 +3,12 @@ const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test src/check-git-status - no results', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': async () => {
+    async execa () {
       return {
         stdout: '## master...origin/master'
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(null)
       },
@@ -25,12 +25,12 @@ test('test src/check-git-status - no results', async (t) => {
 
 test('test src/check-git-status - results', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': async () => {
+    async execa () {
       return {
         stdout: '## develop...origin/develop\nM  foo'
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(null)
       },
@@ -47,12 +47,12 @@ test('test src/check-git-status - results', async (t) => {
 
 test('test src/check-git-status - no .git', async (t) => {
   const checkGitStatus = proxyquire('../../src/check-git-status', {
-    'execa': async () => {
+    async execa () {
       return {
         stdout: '## master...origin/master'
       }
     },
-    'fs': {
+    fs: {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
