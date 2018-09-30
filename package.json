@@ -21,7 +21,7 @@
     "execa": "^1.0.0",
     "ora": "^3.0.0",
     "semver": "^5.5.1",
-    "sergeant": "^22.1.0"
+    "sergeant": "^22.1.1"
   },
   "devDependencies": {
     "@erickmerchant/tasks": "^0.2.0",
