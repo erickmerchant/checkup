@@ -20,7 +20,7 @@
     "chalk": "^2.4.1",
     "execa": "^1.0.0",
     "ora": "^3.0.0",
-    "semver": "^5.5.1",
+    "semver": "^5.6.0",
     "sergeant": "^22.1.4"
   },
   "devDependencies": {
