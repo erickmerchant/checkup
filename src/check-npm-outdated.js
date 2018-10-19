@@ -18,7 +18,7 @@ module.exports = (directory) => async (results) => {
 
   const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-  for (let dependency of Object.keys(outdated)) {
+  for (const dependency of Object.keys(outdated)) {
     const latest = outdated[dependency].latest
     const current = locked.dependencies[dependency].version
 

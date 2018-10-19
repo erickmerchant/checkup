@@ -19,7 +19,7 @@ module.exports = async (args) => {
       if (results.length) {
         oraInstance.fail()
 
-        for (let result of results) {
+        for (const result of results) {
           stdout.write(chalk.gray('  - ' + result) + '\n')
         }
       } else {
