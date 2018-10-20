@@ -42,7 +42,7 @@ test('test src/check-npm-tst - no results', async (t) => {
 test('test src/check-npm-tst - tests failing', async (t) => {
   const npmTest = proxyquire('../../src/check-npm-tst', {
     async execa () {
-      return new Error('not ok')
+      return { code: 1 }
     },
     fs: {
       access (file, mode, callback) {
