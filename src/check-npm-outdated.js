@@ -7,7 +7,7 @@ const fsAccess = promisify(fs.access)
 
 module.exports = (directory) => async (results) => {
   try {
-    await fsAccess(path.join(directory, '.git'), fs.constants.R_OK)
+    await fsAccess(path.join(directory, 'package-lock.json'), fs.constants.R_OK)
   } catch (err) {
     return results
   }
