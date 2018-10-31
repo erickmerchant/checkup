@@ -6,6 +6,7 @@ Essentially it looks at all the directories in the current working directory and
 
 - reports results from `npm audit --json`
 - compares the output of `npm outdated --json` to the package-lock.json versions
+- runs `npm test`
 - runs `git status --porcelain`
 
 ## Usage
