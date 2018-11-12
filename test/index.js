@@ -5,16 +5,9 @@ const chalk = require('chalk')
 test('test src/action - zero length results', async (t) => {
   const logged = []
 
-  t.plan(2)
+  t.plan(1)
 
   await proxyquire('../', {
-    ora ({ stream, text }) {
-      return {
-        start () { t.ok(true) },
-        fail () { stream.write(chalk.red(text) + '\n') },
-        succeed () { stream.write(chalk.green(text) + '\n') }
-      }
-    },
     './src/globals': {
       stdout: {
         write (msg) {
@@ -30,23 +23,16 @@ test('test src/action - zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    chalk.green('test') + '\n'
+    chalk.green('✔︎') + ' test\n'
   ])
 })
 
 test('test src/action - non-zero length results', async (t) => {
   const logged = []
 
-  t.plan(2)
+  t.plan(1)
 
   await proxyquire('../', {
-    ora ({ stream, text }) {
-      return {
-        start () { t.ok(true) },
-        fail () { stream.write(chalk.red(text) + '\n') },
-        succeed () { stream.write(chalk.green(text) + '\n') }
-      }
-    },
     './src/globals': {
       stdout: {
         write (msg) {
@@ -62,7 +48,7 @@ test('test src/action - non-zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    chalk.red('test') + '\n',
+    chalk.red('✘') + ' test\n',
     chalk.gray('  - test') + '\n'
   ])
 })

@@ -3,10 +3,13 @@ const checkNpmOutdated = require('./check-npm-outdated')
 const checkNpmAudit = require('./check-npm-audit')
 const checkNpmTest = require('./check-npm-tst')
 
-module.exports = (directory, args) => {
-  return Promise.resolve([])
-    .then(checkGitStatus(directory))
-    .then(checkNpmOutdated(directory))
-    .then(checkNpmAudit(directory))
-    .then(checkNpmTest(directory))
+module.exports = async (directory) => {
+  const results = await Promise.all([
+    checkGitStatus(directory),
+    checkNpmOutdated(directory),
+    checkNpmAudit(directory),
+    checkNpmTest(directory)
+  ])
+
+  return results.reduce((acc, curr) => acc.concat(curr), [])
 }

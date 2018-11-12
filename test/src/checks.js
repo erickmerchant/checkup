@@ -5,19 +5,19 @@ test('test src/checks', async (t) => {
   t.plan(1)
 
   const results = await proxyquire('../../src/checks', {
-    './check-git-status': () => async (results) => {
-      return results
+    './check-git-status': async () => {
+      return []
     },
-    './check-npm-outdated': () => async (results) => {
-      return results
+    './check-npm-outdated': async () => {
+      return []
     },
-    './check-npm-audit': () => async (results) => {
-      return results
+    './check-npm-audit': async () => {
+      return []
     },
-    './check-npm-tst': () => async (results) => {
-      return results
+    './check-npm-tst': async () => {
+      return []
     }
-  })('test', {})
+  })('test')
 
   t.deepEqual(results, [])
 })

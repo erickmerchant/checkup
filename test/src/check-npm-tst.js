@@ -14,7 +14,7 @@ test('test src/check-npm-tst - no package.json', async (t) => {
 
   t.plan(1)
 
-  const results = await npmTest('test')([])
+  const results = await npmTest('test')
 
   t.deepEqual(results, [])
 })
@@ -34,7 +34,7 @@ test('test src/check-npm-tst - no results', async (t) => {
 
   t.plan(1)
 
-  const results = await npmTest('test')([])
+  const results = await npmTest('test')
 
   t.deepEqual(results, [])
 })
@@ -54,7 +54,7 @@ test('test src/check-npm-tst - tests failing', async (t) => {
 
   t.plan(1)
 
-  const results = await npmTest('test')([])
+  const results = await npmTest('test')
 
   t.deepEqual(results, ['tests failing'])
 })

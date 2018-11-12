@@ -5,7 +5,9 @@ const execa = require('execa')
 const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
 
-module.exports = (directory) => async (results) => {
+module.exports = async (directory) => {
+  const results = []
+
   try {
     await fsAccess(path.join(directory, 'package-lock.json'), fs.constants.R_OK)
   } catch (err) {

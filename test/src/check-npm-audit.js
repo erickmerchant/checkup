@@ -14,7 +14,7 @@ test('test src/check-npm-audit - no package.json', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, [])
 })
@@ -46,7 +46,7 @@ test('test src/check-npm-audit - no results', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, [])
 })
@@ -78,7 +78,7 @@ test('test src/check-npm-audit - 1 result', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, ['1 critical vulnerability'])
 })
@@ -110,7 +110,7 @@ test('test src/check-npm-audit - 2 results', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, ['2 critical vulnerabilities'])
 })

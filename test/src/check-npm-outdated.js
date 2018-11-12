@@ -14,7 +14,7 @@ test('test src/check-npm-outdated - no package.json', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, [])
 })
@@ -43,7 +43,7 @@ test('test src/check-npm-outdated - no results', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, [])
 })
@@ -76,7 +76,7 @@ test('test src/check-npm-outdated - upgrade', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, ['upgrade foo'])
 })
@@ -109,7 +109,7 @@ test('test src/check-npm-outdated - update', async (t) => {
 
   t.plan(1)
 
-  const results = await checkDependencies('test')([])
+  const results = await checkDependencies('test')
 
   t.deepEqual(results, ['update foo'])
 })

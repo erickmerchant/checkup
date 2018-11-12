@@ -1,34 +1,36 @@
 const checks = require('./src/checks')
 const globals = require('./src/globals')
-const stdout = globals.stdout
 const chalk = require('chalk')
 const path = require('path')
-const ora = require('ora')
 const error = require('sergeant/error')
+const stdout = globals.stdout
 
-module.exports = async (args) => {
+module.exports = (args) => {
+  const all = []
+
   for (const directory of args.directory) {
     const name = path.relative(process.cwd(), directory) || '.'
-    const oraInstance = ora({ stream: stdout, text: name })
 
-    try {
-      oraInstance.start()
+    all.push((async () => {
+      try {
+        const results = await checks(path.join(process.cwd(), directory))
 
-      const results = await checks(path.join(process.cwd(), directory), args)
+        if (results.length) {
+          stdout.write(chalk.red('✘') + ' ' + name + '\n')
 
-      if (results.length) {
-        oraInstance.fail()
-
-        for (const result of results) {
-          stdout.write(chalk.gray('  - ' + result) + '\n')
+          for (const result of results) {
+            stdout.write(chalk.gray('  - ' + result) + '\n')
+          }
+        } else {
+          stdout.write(chalk.green('✔︎') + ' ' + name + '\n')
         }
-      } else {
-        oraInstance.succeed()
-      }
-    } catch (err) {
-      error(err)
+      } catch (err) {
+        error(err)
 
-      oraInstance.fail()
-    }
+        stdout.write(chalk.red('✘') + ' ' + name + '\n')
+      }
+    })())
   }
+
+  return Promise.all(all)
 }

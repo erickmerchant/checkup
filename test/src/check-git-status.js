@@ -18,7 +18,7 @@ test('test src/check-git-status - no results', async (t) => {
 
   t.plan(1)
 
-  const results = await checkGitStatus('test')([])
+  const results = await checkGitStatus('test')
 
   t.deepEqual(results, [])
 })
@@ -40,7 +40,7 @@ test('test src/check-git-status - results', async (t) => {
 
   t.plan(1)
 
-  const results = await checkGitStatus('test')([])
+  const results = await checkGitStatus('test')
 
   t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
 })
@@ -62,7 +62,7 @@ test('test src/check-git-status - no .git', async (t) => {
 
   t.plan(1)
 
-  const results = await checkGitStatus('test')([])
+  const results = await checkGitStatus('test')
 
   t.deepEqual(results, [])
 })
