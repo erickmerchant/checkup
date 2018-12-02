@@ -16,8 +16,13 @@
   "author": "Erick Merchant <erickmerchant@gmail.com>",
   "license": "ISC",
   "dependencies": {
+    "builtin-modules": "^3.0.0",
     "chalk": "^2.4.1",
+    "detective": "^5.1.0",
+    "detective-es6": "^2.0.0",
+    "detective-postcss": "^3.0.0",
     "execa": "^1.0.0",
+    "globby": "^8.0.1",
     "semver": "^5.6.0",
     "sergeant": "^22.2.1"
   },
