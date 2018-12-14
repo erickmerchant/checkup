@@ -60,7 +60,15 @@ module.exports = async (directory) => {
   for (const pkgDep of pkgDeps) {
     const pkgDepPkg = require(path.join(directory, 'node_modules', pkgDep, 'package.json'))
 
-    const pkgDepPkgBins = Object.keys(pkgDepPkg.bin || {})
+    let pkgDepPkgBins = []
+
+    if (pkgDepPkg.bin != null) {
+      if (typeof pkgDepPkg.bin === 'string') {
+        pkgDepPkgBins.push(pkgDep)
+      } else {
+        pkgDepPkgBins.push(...Object.keys(pkgDepPkg.bin))
+      }
+    }
 
     let found = false
 
