@@ -1,6 +1,6 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
-const chalk = require('chalk')
+const kleur = require('kleur')
 
 test('test src/action - zero length results', async (t) => {
   const logged = []
@@ -23,7 +23,7 @@ test('test src/action - zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    chalk.green('✔︎') + ' test\n'
+    kleur.green('✔︎') + ' test\n'
   ])
 })
 
@@ -48,7 +48,7 @@ test('test src/action - non-zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    chalk.red('✘') + ' test\n',
-    chalk.gray('  - test') + '\n'
+    kleur.red('✘') + ' test\n',
+    kleur.gray('  - test') + '\n'
   ])
 })
