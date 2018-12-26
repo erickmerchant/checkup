@@ -42,7 +42,7 @@ test('test src/check-git-status - results', async (t) => {
 
   const results = await checkGitStatus('test')
 
-  t.deepEqual(results, [ 'not on master', 'working directory unclean' ])
+  t.deepEqual(results, ['not on master', 'working directory unclean'])
 })
 
 test('test src/check-git-status - no .git', async (t) => {
