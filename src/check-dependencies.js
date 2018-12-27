@@ -46,21 +46,21 @@ module.exports = async (directory) => {
   deps = deps.filter((dep) => !dep.startsWith('.') && !dep.startsWith('/') && !builtins.includes(dep))
 
   deps = deps.map((dep) => {
-    let i = dep.startsWith('@') ? 2 : 1
+    const i = dep.startsWith('@') ? 2 : 1
 
     return dep.split('/').slice(0, i).join('/')
   })
 
   for (const dep of deps) {
     if (!pkgDeps.includes(dep)) {
-      results.push(dep + ' missing')
+      results.push(`${ dep } missing`)
     }
   }
 
   for (const pkgDep of pkgDeps) {
     const pkgDepPkg = require(path.join(directory, 'node_modules', pkgDep, 'package.json'))
 
-    let pkgDepPkgBins = []
+    const pkgDepPkgBins = []
 
     if (pkgDepPkg.bin != null) {
       if (typeof pkgDepPkg.bin === 'string') {
@@ -81,7 +81,7 @@ module.exports = async (directory) => {
     }
 
     if (!found && !deps.includes(pkgDep)) {
-      results.push(pkgDep + ' unused')
+      results.push(`${ pkgDep } unused`)
     }
   }
 

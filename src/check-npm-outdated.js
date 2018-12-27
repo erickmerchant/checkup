@@ -33,13 +33,13 @@ module.exports = async (directory) => {
 
       if (next != null && next !== current) {
         if (semver.diff(next, current) === 'major' || semver.major(current) < 1) {
-          results.push('upgrade ' + dependency)
+          results.push(`upgrade ${ dependency }`)
         } else if (!semver.lt(next, current)) {
-          results.push('update ' + dependency)
+          results.push(`update ${ dependency }`)
         }
       }
     } catch (e) {
-      results.push('linked ' + dependency)
+      results.push(`linked ${ dependency }`)
     }
   }
 
