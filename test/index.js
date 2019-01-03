@@ -23,7 +23,7 @@ test('test src/action - zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    `${ kleur.green('✔︎') } test\n`
+    `${kleur.green('✔︎')} test\n`
   ])
 })
 
@@ -48,7 +48,7 @@ test('test src/action - non-zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    `${ kleur.red('✘') } test\n`,
-    `${ kleur.gray('  - test') }\n`
+    `${kleur.red('✘')} test\n`,
+    `${kleur.gray('  - test')}\n`
   ])
 })

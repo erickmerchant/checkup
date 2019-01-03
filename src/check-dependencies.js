@@ -24,7 +24,7 @@ module.exports = async (directory) => {
 
   pkgDeps = pkgDeps.concat(Object.keys(pkg.devDependencies || {}))
 
-  const files = await globby(['./**/*{js,mjs,css}'], { cwd: path.join(directory), gitignore: true })
+  const files = await globby(['./**/*{js,mjs,css}'], {cwd: path.join(directory), gitignore: true})
 
   let deps = await Promise.all(files.map(async (file) => {
     const code = await fsReadFile(path.join(directory, file), 'utf8')
@@ -53,7 +53,7 @@ module.exports = async (directory) => {
 
   for (const dep of deps) {
     if (!pkgDeps.includes(dep)) {
-      results.push(`${ dep } missing`)
+      results.push(`${dep} missing`)
     }
   }
 
@@ -81,7 +81,7 @@ module.exports = async (directory) => {
     }
 
     if (!found && !deps.includes(pkgDep)) {
-      results.push(`${ pkgDep } unused`)
+      results.push(`${pkgDep} unused`)
     }
   }
 

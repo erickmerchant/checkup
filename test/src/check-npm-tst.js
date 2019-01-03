@@ -8,7 +8,7 @@ test('test src/check-npm-tst - no package.json', async (t) => {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -28,7 +28,7 @@ test('test src/check-npm-tst - no results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -42,13 +42,13 @@ test('test src/check-npm-tst - no results', async (t) => {
 test('test src/check-npm-tst - tests failing', async (t) => {
   const npmTest = proxyquire('../../src/check-npm-tst', {
     async execa () {
-      return { code: 1 }
+      return {code: 1}
     },
     fs: {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 

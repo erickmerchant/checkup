@@ -13,7 +13,7 @@ module.exports = async (directory) => {
     return results
   }
 
-  const result = await execa('git', ['status', '--porcelain', '-b'], { cwd: directory, reject: false })
+  const result = await execa('git', ['status', '--porcelain', '-b'], {cwd: directory, reject: false})
 
   const outdated = result.stdout.split('\n')
 

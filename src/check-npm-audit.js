@@ -13,14 +13,14 @@ module.exports = async (directory) => {
     return results
   }
 
-  const result = await execa('npm', ['audit', '--json'], { cwd: directory })
+  const result = await execa('npm', ['audit', '--json'], {cwd: directory})
 
   const report = result.stdout ? JSON.parse(result.stdout) : {}
 
   for (const type of Object.keys(report.metadata.vulnerabilities)) {
     const count = report.metadata.vulnerabilities[type]
     if (count > 0) {
-      results.push(`${ count } ${ type } ${ count > 1 ? 'vulnerabilities' : 'vulnerability' }`)
+      results.push(`${count} ${type} ${count > 1 ? 'vulnerabilities' : 'vulnerability'}`)
     }
   }
 

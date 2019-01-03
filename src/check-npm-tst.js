@@ -13,7 +13,7 @@ module.exports = async (directory) => {
     return results
   }
 
-  const result = await execa('npm', ['test'], { cwd: directory, reject: false })
+  const result = await execa('npm', ['test'], {cwd: directory, reject: false})
 
   if (result != null && result.code > 0) {
     results.push('tests failing')

@@ -8,7 +8,7 @@ test('test src/check-npm-outdated - no package.json', async (t) => {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -37,7 +37,7 @@ test('test src/check-npm-outdated - no results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -70,7 +70,7 @@ test('test src/check-npm-outdated - upgrade', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -103,7 +103,7 @@ test('test src/check-npm-outdated - update', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 

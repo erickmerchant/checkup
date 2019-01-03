@@ -12,7 +12,7 @@ test('test src/check-git-status - no results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -34,7 +34,7 @@ test('test src/check-git-status - results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -56,7 +56,7 @@ test('test src/check-git-status - no .git', async (t) => {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 

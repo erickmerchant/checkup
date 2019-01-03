@@ -8,7 +8,7 @@ test('test src/check-npm-audit - no package.json', async (t) => {
       access (file, mode, callback) {
         callback(new Error('test'))
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -40,7 +40,7 @@ test('test src/check-npm-audit - no results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -72,7 +72,7 @@ test('test src/check-npm-audit - 1 result', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 
@@ -104,7 +104,7 @@ test('test src/check-npm-audit - 2 results', async (t) => {
       access (file, mode, callback) {
         callback(null)
       },
-      constants: { R_OK: true }
+      constants: {R_OK: true}
     }
   })
 

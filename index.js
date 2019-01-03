@@ -16,18 +16,18 @@ module.exports = (args) => {
         const results = await checks(path.join(process.cwd(), directory))
 
         if (results.length) {
-          stdout.write(`${ kleur.red('✘') } ${ name }\n`)
+          stdout.write(`${kleur.red('✘')} ${name}\n`)
 
           for (const result of results) {
-            stdout.write(`${ kleur.gray(`  - ${ result }`) }\n`)
+            stdout.write(`${kleur.gray(`  - ${result}`)}\n`)
           }
         } else {
-          stdout.write(`${ kleur.green('✔︎') } ${ name }\n`)
+          stdout.write(`${kleur.green('✔︎')} ${name}\n`)
         }
       } catch (err) {
         error(err)
 
-        stdout.write(`${ kleur.red('✘') } ${ name }\n`)
+        stdout.write(`${kleur.red('✘')} ${name}\n`)
       }
     })())
   }
