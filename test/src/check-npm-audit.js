@@ -5,7 +5,7 @@ test('test src/check-npm-audit - no package.json', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
     execa: {},
     fs: {
-      access (file, mode, callback) {
+      access(file, mode, callback) {
         callback(new Error('test'))
       },
       constants: {R_OK: true}
@@ -21,7 +21,7 @@ test('test src/check-npm-audit - no package.json', async (t) => {
 
 test('test src/check-npm-audit - no results', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    async execa () {
+    async execa() {
       return {
         stdout: `{
           "metadata": {
@@ -37,7 +37,7 @@ test('test src/check-npm-audit - no results', async (t) => {
       }
     },
     fs: {
-      access (file, mode, callback) {
+      access(file, mode, callback) {
         callback(null)
       },
       constants: {R_OK: true}
@@ -53,7 +53,7 @@ test('test src/check-npm-audit - no results', async (t) => {
 
 test('test src/check-npm-audit - 1 result', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    async execa () {
+    async execa() {
       return {
         stdout: `{
           "metadata": {
@@ -69,7 +69,7 @@ test('test src/check-npm-audit - 1 result', async (t) => {
       }
     },
     fs: {
-      access (file, mode, callback) {
+      access(file, mode, callback) {
         callback(null)
       },
       constants: {R_OK: true}
@@ -85,7 +85,7 @@ test('test src/check-npm-audit - 1 result', async (t) => {
 
 test('test src/check-npm-audit - 2 results', async (t) => {
   const checkDependencies = proxyquire('../../src/check-npm-audit', {
-    async execa () {
+    async execa() {
       return {
         stdout: `{
           "metadata": {
@@ -101,7 +101,7 @@ test('test src/check-npm-audit - 2 results', async (t) => {
       }
     },
     fs: {
-      access (file, mode, callback) {
+      access(file, mode, callback) {
         callback(null)
       },
       constants: {R_OK: true}

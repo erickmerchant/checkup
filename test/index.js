@@ -10,12 +10,12 @@ test('test src/action - zero length results', async (t) => {
   await proxyquire('../', {
     './src/globals': {
       stdout: {
-        write (msg) {
+        write(msg) {
           logged.push(msg)
         }
       }
     },
-    async './src/checks' () {
+    async './src/checks'() {
       return []
     }
   })({
@@ -35,12 +35,12 @@ test('test src/action - non-zero length results', async (t) => {
   await proxyquire('../', {
     './src/globals': {
       stdout: {
-        write (msg) {
+        write(msg) {
           logged.push(msg)
         }
       }
     },
-    async './src/checks' () {
+    async './src/checks'() {
       return ['test']
     }
   })({
