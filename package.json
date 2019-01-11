@@ -25,10 +25,10 @@
     "globby": "^8.0.2",
     "kleur": "^3.0.1",
     "semver": "^5.6.0",
-    "sergeant": "^23.2.0"
+    "sergeant": "^24.0.0"
   },
   "devDependencies": {
-    "@erickmerchant/lint": "^1.6.0",
+    "@erickmerchant/lint": "^1.6.1",
     "proxyquire": "^2.1.0",
     "tape": "^4.9.2"
   }
