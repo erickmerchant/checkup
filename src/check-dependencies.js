@@ -51,6 +51,8 @@ module.exports = async (directory) => {
     return dep.split('/').slice(0, i).join('/')
   })
 
+  deps = deps.filter((dep, i, deps) => deps.indexOf(dep) === i)
+
   for (const dep of deps) {
     if (!pkgDeps.includes(dep)) {
       results.push(`${dep} missing`)
@@ -58,29 +60,45 @@ module.exports = async (directory) => {
   }
 
   for (const pkgDep of pkgDeps) {
-    const pkgDepPkg = require(path.join(directory, 'node_modules', pkgDep, 'package.json'))
+    let found = deps.includes(pkgDep)
 
-    const pkgDepPkgBins = []
-
-    if (pkgDepPkg.bin != null) {
-      if (typeof pkgDepPkg.bin === 'string') {
-        pkgDepPkgBins.push(pkgDep)
-      } else {
-        pkgDepPkgBins.push(...Object.keys(pkgDepPkg.bin))
-      }
-    }
-
-    let found = false
-
-    for (const pkgDepPkgBin of pkgDepPkgBins) {
+    if (!found) {
       for (const script of Object.keys(pkg.scripts || {})) {
-        if (pkg.scripts[script].includes(pkgDepPkgBin)) {
+        if (pkg.scripts[script].includes(pkgDep)) {
           found = true
+
+          break
         }
       }
     }
 
-    if (!found && !deps.includes(pkgDep)) {
+    if (!found) {
+      const pkgDepPkg = require(path.join(directory, 'node_modules', pkgDep, 'package.json'))
+
+      const pkgDepPkgBins = []
+
+      if (pkgDepPkg.bin != null) {
+        if (typeof pkgDepPkg.bin === 'string') {
+          pkgDepPkgBins.push(pkgDep)
+        } else {
+          pkgDepPkgBins.push(...Object.keys(pkgDepPkg.bin))
+        }
+      }
+
+      for (const pkgDepPkgBin of pkgDepPkgBins) {
+        for (const script of Object.keys(pkg.scripts || {})) {
+          if (pkg.scripts[script].includes(pkgDepPkgBin)) {
+            found = true
+
+            break
+          }
+        }
+
+        if (found) break
+      }
+    }
+
+    if (!found) {
       results.push(`${pkgDep} unused`)
     }
   }
