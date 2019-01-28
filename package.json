@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "builtin-modules": "^3.0.0",
-    "detective": "^5.1.0",
+    "detective": "^5.2.0",
     "detective-es6": "^2.0.0",
     "detective-postcss": "^3.0.0",
     "execa": "^1.0.0",
