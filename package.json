@@ -28,7 +28,7 @@
     "sergeant": "^24.0.0"
   },
   "devDependencies": {
-    "@erickmerchant/lint": "^1.9.0",
+    "@erickmerchant/lint": "^1.10.0",
     "proxyquire": "^2.1.0",
     "tape": "^4.9.2"
   }
