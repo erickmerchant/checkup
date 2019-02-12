@@ -13,5 +13,9 @@ module.exports = async (directory) => {
     checkNpmTest(directory)
   ])
 
-  return results.reduce((acc, curr) => acc.concat(curr), [])
+  return results.reduce((acc, curr) => {
+    acc.push(...curr)
+
+    return acc
+  }, [])
 }

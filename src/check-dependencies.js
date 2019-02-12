@@ -20,9 +20,9 @@ module.exports = async (directory) => {
 
   const pkg = require(path.join(directory, 'package.json'))
 
-  let pkgDeps = Object.keys(pkg.dependencies || {})
+  const pkgDeps = Object.keys(pkg.dependencies || {})
 
-  pkgDeps = pkgDeps.concat(Object.keys(pkg.devDependencies || {}))
+  pkgDeps.push(...Object.keys(pkg.devDependencies || {}))
 
   const files = await globby(['./**/*{js,mjs,css}'], {cwd: path.join(directory), gitignore: true})
 
@@ -41,7 +41,11 @@ module.exports = async (directory) => {
     }
   }))
 
-  deps = deps.reduce((acc, deps) => acc.concat(deps), [])
+  deps = deps.reduce((acc, deps) => {
+    acc.push(...deps)
+
+    return acc
+  }, [])
 
   deps = deps.filter((dep) => !dep.startsWith('.') && !dep.startsWith('/') && !builtins.includes(dep))
 
