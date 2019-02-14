@@ -50,9 +50,17 @@ module.exports = async (directory) => {
   deps = deps.filter((dep) => !dep.startsWith('.') && !dep.startsWith('/') && !builtins.includes(dep))
 
   deps = deps.map((dep) => {
-    const i = dep.startsWith('@') ? 2 : 1
+    let indexOf = dep.indexOf('/')
 
-    return dep.split('/').slice(0, i).join('/')
+    if (dep.startsWith('@')) {
+      indexOf = dep.indexOf('/', indexOf + 1)
+    }
+
+    if (indexOf === -1) {
+      return dep
+    }
+
+    return dep.substring(0, indexOf)
   })
 
   deps = deps.filter((dep, i, deps) => deps.indexOf(dep) === i)
