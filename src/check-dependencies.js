@@ -105,8 +105,20 @@ module.exports = async (directory) => {
             break
           }
         }
+      }
+    }
 
-        if (found) break
+    if (!found) {
+      for (const subPkgDep of pkgDeps) {
+        const pkgDepPkg = require(path.join(directory, 'node_modules', subPkgDep, 'package.json'))
+
+        if (pkgDepPkg.peerDependencies != null) {
+          if (Object.keys(pkgDepPkg.peerDependencies).includes(pkgDep)) {
+            found = true
+
+            break
+          }
+        }
       }
     }
 
