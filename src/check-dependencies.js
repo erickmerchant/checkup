@@ -26,7 +26,7 @@ const detectiveHTML = (code) => {
       }
 
       if (node.tagName === 'style' && node.childNodes != null && node.childNodes[0] != null) {
-        results.push(...detectivePostcss(node.childNodes[0]))
+        results.push(...detectivePostcss(node.childNodes[0].value))
       }
 
       if (node.tagName === 'script') {
@@ -37,7 +37,7 @@ const detectiveHTML = (code) => {
           if (src != null) {
             results.push(src.value)
           } else if (node.childNodes != null && node.childNodes[0] != null) {
-            results.push(...detectiveES6(node.childNodes[0]))
+            results.push(...detectiveES6(node.childNodes[0].value))
           }
         }
       }
@@ -48,7 +48,7 @@ const detectiveHTML = (code) => {
     return results
   }
 
-  const ast = parse5.parseFragment(String(code))
+  const ast = parse5.parseFragment(code)
 
   return traverse(ast.childNodes || [])
 }
