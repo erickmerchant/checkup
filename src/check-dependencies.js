@@ -4,10 +4,47 @@ const globby = require('globby')
 const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
 const fsReadFile = promisify(fs.readFile)
+const parse5 = require('parse5')
 const detective = require('detective')
 const detectiveES6 = require('detective-es6')
 const detectivePostcss = require('detective-postcss')
 const builtins = require('builtin-modules')
+
+const detectiveHTML = (code) => {
+  const traverse = (nodes) => {
+    const results = []
+
+    for (const node of nodes) {
+      if (node.tagName === 'link') {
+        const rel = node.attrs.find((attr) => attr.name === 'rel')
+
+        if (rel.value === 'stylesheet') {
+          const href = node.attrs.find((attr) => attr.name === 'href')
+
+          results.push(href.value)
+        }
+      }
+
+      if (node.tagName === 'script') {
+        const type = node.attrs.find((attr) => attr.name === 'type')
+
+        if (type.value === 'module') {
+          const src = node.attrs.find((attr) => attr.name === 'src')
+
+          results.push(src.value)
+        }
+      }
+
+      results.push(...traverse(node.childNodes || []))
+    }
+
+    return results
+  }
+
+  const ast = parse5.parseFragment(String(code))
+
+  return traverse(ast.childNodes || [])
+}
 
 module.exports = async (directory) => {
   const results = []
@@ -24,7 +61,7 @@ module.exports = async (directory) => {
 
   pkgDeps.push(...Object.keys(pkg.devDependencies || {}))
 
-  const files = await globby(['./**/*{js,mjs,css}'], {cwd: path.join(directory), gitignore: true})
+  const files = await globby(['./**/*{js,mjs,css,html}'], {cwd: path.join(directory), gitignore: true})
 
   let deps = await Promise.all(files.map(async (file) => {
     const code = await fsReadFile(path.join(directory, file), 'utf8')
@@ -38,6 +75,9 @@ module.exports = async (directory) => {
 
       case '.css':
         return detectivePostcss(code)
+
+      case '.html':
+        return detectiveHTML(code)
     }
   }))
 
