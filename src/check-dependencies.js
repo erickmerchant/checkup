@@ -18,20 +18,27 @@ const detectiveHTML = (code) => {
       if (node.tagName === 'link') {
         const rel = node.attrs.find((attr) => attr.name === 'rel')
 
-        if (rel.value === 'stylesheet') {
+        if (rel != null && rel.value === 'stylesheet') {
           const href = node.attrs.find((attr) => attr.name === 'href')
 
-          results.push(href.value)
+          if (href != null) results.push(href.value)
         }
       }
 
+      if (node.tagName === 'style' && node.childNodes != null && node.childNodes[0] != null) {
+        results.push(...detectivePostcss(node.childNodes[0]))
+      }
+
       if (node.tagName === 'script') {
+        const src = node.attrs.find((attr) => attr.name === 'src')
         const type = node.attrs.find((attr) => attr.name === 'type')
 
-        if (type.value === 'module') {
-          const src = node.attrs.find((attr) => attr.name === 'src')
-
-          results.push(src.value)
+        if (type != null && type.value === 'module') {
+          if (src != null) {
+            results.push(src.value)
+          } else if (node.childNodes != null && node.childNodes[0] != null) {
+            results.push(...detectiveES6(node.childNodes[0]))
+          }
         }
       }
 
