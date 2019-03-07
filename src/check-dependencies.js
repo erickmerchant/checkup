@@ -48,7 +48,7 @@ const detectiveHTML = (code) => {
     return results
   }
 
-  const ast = parse5.parseFragment(code)
+  const ast = parse5.parse(code)
 
   return traverse(ast.childNodes || [])
 }
