@@ -13,7 +13,7 @@ module.exports = async (directory) => {
     return results
   }
 
-  const result = await execa('npm', ['audit', '--json'], {cwd: directory})
+  const result = await execa('npm', ['audit', '--json'], {cwd: directory, reject: false})
 
   const report = result.stdout ? JSON.parse(result.stdout) : {}
 
