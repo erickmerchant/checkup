@@ -25,7 +25,7 @@
     "globby": "^9.1.0",
     "kleur": "^3.0.2",
     "parse5": "^5.1.0",
-    "semver": "^5.6.0",
+    "semver": "^6.0.0",
     "sergeant": "^24.1.4"
   },
   "devDependencies": {
