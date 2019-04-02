@@ -22,7 +22,7 @@
     "detective-es6": "^2.1.0",
     "detective-postcss": "^3.0.1",
     "execa": "^1.0.0",
-    "globby": "^9.1.0",
+    "globby": "^9.2.0",
     "kleur": "^3.0.2",
     "parse5": "^5.1.0",
     "semver": "^6.0.0",
