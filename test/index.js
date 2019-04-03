@@ -7,8 +7,8 @@ test('test src/action - zero length results', async (t) => {
 
   t.plan(1)
 
-  await proxyquire('../', {
-    './src/globals': {
+  await proxyquire('../main.js', {
+    './src/globals.js': {
       stdout: {
         write(msg) {
           logged.push(msg)
@@ -32,8 +32,8 @@ test('test src/action - non-zero length results', async (t) => {
 
   t.plan(1)
 
-  await proxyquire('../', {
-    './src/globals': {
+  await proxyquire('../main.js', {
+    './src/globals.js': {
       stdout: {
         write(msg) {
           logged.push(msg)

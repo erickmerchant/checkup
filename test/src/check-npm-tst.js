@@ -2,7 +2,7 @@ const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test src/check-npm-tst - no package.json', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst', {
+  const npmTest = proxyquire('../../src/check-npm-tst.js', {
     execa: {},
     fs: {
       access(file, mode, callback) {
@@ -20,7 +20,7 @@ test('test src/check-npm-tst - no package.json', async (t) => {
 })
 
 test('test src/check-npm-tst - no results', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst', {
+  const npmTest = proxyquire('../../src/check-npm-tst.js', {
     async execa() {
       return {}
     },
@@ -40,7 +40,7 @@ test('test src/check-npm-tst - no results', async (t) => {
 })
 
 test('test src/check-npm-tst - tests failing', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst', {
+  const npmTest = proxyquire('../../src/check-npm-tst.js', {
     async execa() {
       return {code: 1}
     },

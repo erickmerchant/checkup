@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const action = require('./index')
+const action = require('./main.js')
 const command = require('sergeant')
 
 command('checkup', ({parameter}) => {

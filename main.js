@@ -1,5 +1,5 @@
-const checks = require('./src/checks')
-const globals = require('./src/globals')
+const checks = require('./src/checks.js')
+const globals = require('./src/globals.js')
 const {red, gray, green} = require('kleur')
 const path = require('path')
 const error = require('sergeant/error')

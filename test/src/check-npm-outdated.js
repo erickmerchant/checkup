@@ -2,7 +2,7 @@ const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache().noCallThru()
 
 test('test src/check-npm-outdated - no package.json', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-outdated', {
+  const checkDependencies = proxyquire('../../src/check-npm-outdated.js', {
     execa: {},
     fs: {
       access(file, mode, callback) {
@@ -20,7 +20,7 @@ test('test src/check-npm-outdated - no package.json', async (t) => {
 })
 
 test('test src/check-npm-outdated - no results', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-outdated', {
+  const checkDependencies = proxyquire('../../src/check-npm-outdated.js', {
     'test/package-lock.json': {
       dependencies: {
         foo: {
@@ -49,7 +49,7 @@ test('test src/check-npm-outdated - no results', async (t) => {
 })
 
 test('test src/check-npm-outdated - upgrade', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-outdated', {
+  const checkDependencies = proxyquire('../../src/check-npm-outdated.js', {
     'test/package-lock.json': {
       dependencies: {
         foo: {
@@ -82,7 +82,7 @@ test('test src/check-npm-outdated - upgrade', async (t) => {
 })
 
 test('test src/check-npm-outdated - update', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-outdated', {
+  const checkDependencies = proxyquire('../../src/check-npm-outdated.js', {
     'test/package-lock.json': {
       dependencies: {
         foo: {

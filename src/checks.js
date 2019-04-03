@@ -1,8 +1,8 @@
-const checkDependencies = require('./check-dependencies')
-const checkGitStatus = require('./check-git-status')
-const checkNpmOutdated = require('./check-npm-outdated')
-const checkNpmAudit = require('./check-npm-audit')
-const checkNpmTest = require('./check-npm-tst')
+const checkDependencies = require('./check-dependencies.js')
+const checkGitStatus = require('./check-git-status.js')
+const checkNpmOutdated = require('./check-npm-outdated.js')
+const checkNpmAudit = require('./check-npm-audit.js')
+const checkNpmTest = require('./check-npm-tst.js')
 
 module.exports = async (directory) => {
   const results = await Promise.all([
