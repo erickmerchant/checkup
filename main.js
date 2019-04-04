@@ -25,9 +25,9 @@ module.exports = (args) => {
           stdout.write(`${green('✔︎')} ${name}\n`)
         }
       } catch (err) {
-        error(err)
-
         stdout.write(`${red('✘')} ${name}\n`)
+
+        error(err)
       }
     })())
   }
