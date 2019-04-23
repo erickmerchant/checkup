@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 const action = require('./main.js')
-const command = require('sergeant')
+const {command, start} = require('sergeant')('checkup')
 
-command('checkup', ({parameter}) => {
-  parameter('directory', {
+command(({parameter}) => {
+  parameter({
+    name: 'directory',
     description: 'directories to look at',
     required: true,
     multiple: true,
@@ -11,4 +12,6 @@ command('checkup', ({parameter}) => {
   })
 
   return action
-})(process.argv.slice(2))
+})
+
+start(process.argv.slice(2))

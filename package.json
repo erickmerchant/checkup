@@ -26,7 +26,7 @@
     "kleur": "^3.0.3",
     "parse5": "^5.1.0",
     "semver": "^6.0.0",
-    "sergeant": "^25.0.0"
+    "sergeant": "^26.0.0"
   },
   "devDependencies": {
     "@erickmerchant/lint": "^2.3.0",
