@@ -5,7 +5,7 @@ const {command, start} = require('sergeant')('checkup')
 command(({parameter}) => {
   parameter({
     name: 'directory',
-    description: 'directories to look at',
+    description: 'a directory to check',
     required: true,
     multiple: true,
     type(val) { return val }
