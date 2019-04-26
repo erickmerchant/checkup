@@ -2,7 +2,9 @@
 const action = require('./main.js')
 const {command, start} = require('sergeant')('checkup')
 
-command(({parameter}) => {
+command(({parameter, description}) => {
+  description('checks projects (npm or git) for various problems')
+
   parameter({
     name: 'directory',
     description: 'a directory to check',
