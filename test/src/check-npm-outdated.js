@@ -6,7 +6,7 @@ test('test src/check-npm-outdated - no package.json', async (t) => {
     execa: {},
     fs: {
       access(file, mode, callback) {
-        callback(new Error('test'))
+        callback(Error('test'))
       },
       constants: {R_OK: true}
     }

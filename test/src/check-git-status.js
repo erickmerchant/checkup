@@ -54,7 +54,7 @@ test('test src/check-git-status - no .git', async (t) => {
     },
     fs: {
       access(file, mode, callback) {
-        callback(new Error('test'))
+        callback(Error('test'))
       },
       constants: {R_OK: true}
     }
