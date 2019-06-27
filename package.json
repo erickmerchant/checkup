@@ -21,7 +21,7 @@
     "detective": "^5.2.0",
     "detective-es6": "^2.1.0",
     "detective-postcss": "^3.0.1",
-    "execa": "^1.0.0",
+    "execa": "^2.0.1",
     "globby": "^9.2.0",
     "kleur": "^3.0.3",
     "parse5": "^5.1.0",
@@ -29,8 +29,8 @@
     "sergeant": "^26.1.2"
   },
   "devDependencies": {
-    "@erickmerchant/lint": "^2.5.0",
-    "eslint": "^5.16.0",
+    "@erickmerchant/lint": "^3.0.0",
+    "eslint": "^6.0.1",
     "proxyquire": "^2.1.0",
     "tape": "^4.10.2"
   },
