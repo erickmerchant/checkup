@@ -5,10 +5,19 @@ const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
 const fsReadFile = promisify(fs.readFile)
 const parse5 = require('parse5')
-const detective = require('detective')
-const detectiveES6 = require('detective-es6')
-const detectivePostcss = require('detective-postcss')
 const builtins = require('builtin-modules')
+const regex = /(require\(|import\(|import.*?from\s*|@import\s*|@import\s*url\()(['"])(.*?)\2/g
+
+const detective = (code) => {
+  let r
+  const results = []
+
+  while ((r = regex.exec(code)) != null) {
+    results.push(r[3])
+  }
+
+  return results
+}
 
 const detectiveHTML = (code) => {
   const traverse = (nodes) => {
@@ -26,7 +35,7 @@ const detectiveHTML = (code) => {
       }
 
       if (node.tagName === 'style' && node.childNodes != null && node.childNodes[0] != null) {
-        results.push(...detectivePostcss(node.childNodes[0].value))
+        results.push(...detective(node.childNodes[0].value))
       }
 
       if (node.tagName === 'script') {
@@ -37,7 +46,7 @@ const detectiveHTML = (code) => {
           if (src != null) {
             results.push(src.value)
           } else if (node.childNodes != null && node.childNodes[0] != null) {
-            results.push(...detectiveES6(node.childNodes[0].value))
+            results.push(...detective(node.childNodes[0].value))
           }
         }
       }
@@ -75,13 +84,9 @@ module.exports = async (directory) => {
 
     switch (path.extname(file)) {
       case '.js':
-        return detective(code)
-
       case '.mjs':
-        return detectiveES6(code)
-
       case '.css':
-        return detectivePostcss(code)
+        return detective(code)
 
       case '.html':
         return detectiveHTML(code)
