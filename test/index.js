@@ -9,8 +9,8 @@ test('test src/action - zero length results', async (t) => {
 
   await proxyquire('../main.js', {
     './src/globals.js': {
-      stdout: {
-        write(msg) {
+      console: {
+        log(msg) {
           logged.push(msg)
         }
       }
@@ -23,7 +23,7 @@ test('test src/action - zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    `${green('✔︎')} test\n`
+    `${green('✔︎')} test`
   ])
 })
 
@@ -34,8 +34,8 @@ test('test src/action - non-zero length results', async (t) => {
 
   await proxyquire('../main.js', {
     './src/globals.js': {
-      stdout: {
-        write(msg) {
+      console: {
+        log(msg) {
           logged.push(msg)
         }
       }
@@ -48,7 +48,7 @@ test('test src/action - non-zero length results', async (t) => {
   })
 
   t.deepEqual(logged, [
-    `${red('✘')} test\n`,
-    `${gray('  - test')}\n`
+    `${red('✘')} test`,
+    `${gray('  - test')}`
   ])
 })

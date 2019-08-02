@@ -1,9 +1,8 @@
 const checks = require('./src/checks.js')
-const globals = require('./src/globals.js')
+const {console} = require('./src/globals.js')
 const {red, gray, green} = require('kleur')
 const path = require('path')
 const error = require('sergeant/error')
-const stdout = globals.stdout
 
 module.exports = (args) => {
   const all = []
@@ -16,16 +15,16 @@ module.exports = (args) => {
         const results = await checks(path.join(process.cwd(), directory))
 
         if (results.length) {
-          stdout.write(`${red('✘')} ${name}\n`)
+          console.log(`${red('✘')} ${name}`)
 
           for (const result of results) {
-            stdout.write(`${gray(`  - ${result}`)}\n`)
+            console.log(`${gray(`  - ${result}`)}`)
           }
         } else {
-          stdout.write(`${green('✔︎')} ${name}\n`)
+          console.log(`${green('✔︎')} ${name}`)
         }
       } catch (err) {
-        stdout.write(`${red('✘')} ${name}\n`)
+        console.log(`${red('✘')} ${name}`)
 
         error(err)
       }
