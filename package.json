@@ -18,7 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "builtin-modules": "^3.1.0",
-    "execa": "^2.0.3",
+    "execa": "^2.0.4",
     "globby": "^10.0.1",
     "kleur": "^3.0.3",
     "parse5": "^5.1.0",
