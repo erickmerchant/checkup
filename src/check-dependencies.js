@@ -94,12 +94,12 @@ module.exports = async (directory) => {
   }))
 
   deps = deps.reduce((acc, deps) => {
-    acc.push(...deps)
+    if (deps) acc.push(...deps)
 
     return acc
   }, [])
 
-  deps = deps.filter((dep) => !dep.startsWith('.') && !dep.startsWith('/') && !builtins.includes(dep))
+  deps = deps.filter((dep) => !dep.startsWith('http://') && !dep.startsWith('https://') && !dep.startsWith('.') && !dep.startsWith('/') && !builtins.includes(dep))
 
   deps = deps.map((dep) => {
     let indexOf = dep.indexOf('/')
