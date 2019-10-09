@@ -25,7 +25,7 @@ module.exports = async (directory) => {
       }
     }
   } else {
-    console.error(report)
+    results.push('audit not done')
   }
 
   return results
