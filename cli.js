@@ -2,18 +2,18 @@
 const action = require('./main.js')
 const {command, start} = require('sergeant')('checkup')
 
-command(({parameter, description}) => {
-  description('checks projects (npm or git) for various problems')
-
-  parameter({
-    name: 'directory',
-    description: 'a directory to check',
-    required: true,
-    multiple: true,
-    type(val) { return val }
-  })
-
-  return action
+command({
+  description: 'checks projects (npm or git) for various problems',
+  signature: ['directory'],
+  options: {
+    directory: {
+      description: 'a directory to check',
+      required: true,
+      multiple: true,
+      parameter: true
+    }
+  },
+  action
 })
 
 start(process.argv.slice(2))
