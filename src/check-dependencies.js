@@ -3,7 +3,8 @@ const path = require('path')
 const globby = require('globby')
 const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
-const fsReadFile = promisify(fs.readFile)
+const streamPromise = require('stream-to-promise')
+const createReadStream = fs.createReadStream
 const parse5 = require('parse5')
 const builtins = require('builtin-modules')
 const regex = /(require\(|import\(|import.*?from\s*|@import\s*|@import\s*url\()(['"])(.*?)\2/g
@@ -80,7 +81,9 @@ module.exports = async (directory) => {
   const files = await globby(['./**/*{js,mjs,css,html}'], {cwd: path.join(directory), gitignore: true})
 
   let deps = await Promise.all(files.map(async (file) => {
-    const code = await fsReadFile(path.join(directory, file), 'utf8')
+    let code = await streamPromise(createReadStream(path.join(directory, file), 'utf8'))
+
+    code = String(code)
 
     switch (path.extname(file)) {
       case '.js':
