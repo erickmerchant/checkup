@@ -21,9 +21,9 @@
     "execa": "^3.2.0",
     "globby": "^10.0.1",
     "kleur": "^3.0.3",
-    "parse5": "^5.1.0",
+    "parse5": "^5.1.1",
     "semver": "^6.3.0",
-    "sergeant": "^27.0.0",
+    "sergeant": "^27.1.0",
     "stream-to-promise": "^2.2.0"
   },
   "devDependencies": {
