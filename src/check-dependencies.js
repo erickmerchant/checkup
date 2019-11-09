@@ -3,7 +3,7 @@ const path = require('path')
 const globby = require('globby')
 const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
-const streamPromise = require('stream-to-promise')
+
 const createReadStream = fs.createReadStream
 const parse5 = require('parse5')
 const builtins = require('builtin-modules')
@@ -58,7 +58,7 @@ const detectiveHTML = (code) => {
     return results
   }
 
-  const ast = parse5.parse(code)
+  const ast = parse5.parse(String(code))
 
   return traverse(ast.childNodes || [])
 }
@@ -81,9 +81,14 @@ module.exports = async (directory) => {
   const files = await globby(['./**/*{js,mjs,css,html}'], {cwd: path.join(directory), gitignore: true})
 
   let deps = await Promise.all(files.map(async (file) => {
-    let code = await streamPromise(createReadStream(path.join(directory, file), 'utf8'))
+    const codeStream = createReadStream(path.join(directory, file))
+    let code = []
 
-    code = String(code)
+    for await (const chunk of codeStream) {
+      code.push(chunk)
+    }
+
+    code = Buffer.concat(code)
 
     switch (path.extname(file)) {
       case '.js':
