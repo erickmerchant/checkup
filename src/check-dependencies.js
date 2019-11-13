@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const globby = require('globby')
+const execa = require('execa')
 const promisify = require('util').promisify
 const fsAccess = promisify(fs.access)
 
@@ -78,7 +79,17 @@ module.exports = async (directory) => {
 
   pkgDeps.push(...Object.keys(pkg.devDependencies || {}))
 
-  const files = await globby(['./**/*{js,mjs,css,html}'], {cwd: path.join(directory), gitignore: true})
+  const changed = await execa('git', ['status', '--ignored', '--porcelain'], {cwd: path.join(directory), reject: false})
+
+  const ignore = changed.stdout.split('\n').filter((file) => file.startsWith('!!')).map((ignored) => {
+    ignored = ignored.substr(3)
+
+    if (ignored.endsWith('/')) return `${ignored}**`
+
+    return ignored
+  })
+
+  const files = await globby(['./**/*{js,mjs,css,html}'], {cwd: path.join(directory), ignore})
 
   let deps = await Promise.all(files.map(async (file) => {
     const codeStream = createReadStream(path.join(directory, file))
