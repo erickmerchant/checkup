@@ -20,11 +20,11 @@ module.exports = async (directory) => {
 
   const outdated = result.stdout ? JSON.parse(result.stdout) : {}
 
-  for (const dependency of Object.keys(outdated)) {
-    const latest = outdated[dependency].latest
+  for (const [dependency, old] of Object.entries(outdated)) {
+    const latest = old.latest
     const current = locked.dependencies[dependency].version
 
-    let next = outdated[dependency].wanted
+    let next = old.wanted
 
     try {
       if (latest != null && semver.prerelease(latest) == null) {

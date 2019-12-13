@@ -146,8 +146,8 @@ module.exports = async (directory) => {
     let found = deps.includes(pkgDep)
 
     if (!found) {
-      for (const script of Object.keys(pkg.scripts || {})) {
-        if (pkg.scripts[script].includes(pkgDep)) {
+      for (const script of Object.values(pkg.scripts || {})) {
+        if (script.includes(pkgDep)) {
           found = true
 
           break
@@ -169,8 +169,8 @@ module.exports = async (directory) => {
       }
 
       for (const pkgDepPkgBin of pkgDepPkgBins) {
-        for (const script of Object.keys(pkg.scripts || {})) {
-          if (pkg.scripts[script].includes(pkgDepPkgBin)) {
+        for (const script of Object.values(pkg.scripts || {})) {
+          if (script.includes(pkgDepPkgBin)) {
             found = true
 
             break

@@ -18,8 +18,7 @@ module.exports = async (directory) => {
   const report = result.stdout ? JSON.parse(result.stdout) : {}
 
   if (report.metadata) {
-    for (const type of Object.keys(report.metadata.vulnerabilities)) {
-      const count = report.metadata.vulnerabilities[type]
+    for (const [type, count] of Object.entries(report.metadata.vulnerabilities)) {
       if (count > 0) {
         results.push(`${count} ${type} ${count > 1 ? 'vulnerabilities' : 'vulnerability'}`)
       }
