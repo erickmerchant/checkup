@@ -22,7 +22,7 @@
     "globby": "^10.0.1",
     "kleur": "^3.0.3",
     "parse5": "^5.1.1",
-    "semver": "^7.1.0",
+    "semver": "^7.1.1",
     "sergeant": "^27.2.0"
   },
   "devDependencies": {
