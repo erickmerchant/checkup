@@ -9,6 +9,13 @@
     "pretest": "lint '**/*.js'",
     "test": "tape 'test/**/*.js'"
   },
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src/",
+    "cli.js",
+    "main.js"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/erickmerchant/checkup.git"
@@ -23,7 +30,7 @@
     "kleur": "^3.0.3",
     "parse5": "^5.1.1",
     "semver": "^7.1.1",
-    "sergeant": "^27.2.0"
+    "sergeant": "^27.2.1"
   },
   "devDependencies": {
     "@erickmerchant/lint": "^3.6.0",
