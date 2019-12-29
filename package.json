@@ -1,10 +1,27 @@
 {
   "name": "@erickmerchant/checkup",
-  "description": "Check multiple projects for various things.",
   "version": "12.6.4",
+  "description": "Check multiple projects for various things.",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/erickmerchant/checkup.git"
+  },
+  "license": "ISC",
   "author": "Erick Merchant <erickmerchant@gmail.com>",
+  "files": [
+    "LICENSE",
+    "README.md",
+    "src/",
+    "cli.js",
+    "main.js"
+  ],
   "bin": {
     "checkup": "./cli.js"
+  },
+  "scripts": {
+    "pretest": "lint '**/*.js'",
+    "test": "tape 'test/**/*.js'"
   },
   "dependencies": {
     "builtin-modules": "^3.1.0",
@@ -24,22 +41,5 @@
   },
   "engines": {
     "node": ">=12"
-  },
-  "files": [
-    "LICENSE",
-    "README.md",
-    "src/",
-    "cli.js",
-    "main.js"
-  ],
-  "keywords": [],
-  "license": "ISC",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/erickmerchant/checkup.git"
-  },
-  "scripts": {
-    "pretest": "lint '**/*.js'",
-    "test": "tape 'test/**/*.js'"
   }
 }
