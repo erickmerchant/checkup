@@ -12,7 +12,7 @@
   "files": [
     "LICENSE",
     "README.md",
-    "src/",
+    "lib/",
     "cli.js",
     "main.js"
   ],
@@ -30,7 +30,7 @@
     "kleur": "^3.0.3",
     "parse5": "^5.1.1",
     "semver": "^7.1.1",
-    "sergeant": "^27.2.1"
+    "sergeant": "^27.2.2"
   },
   "devDependencies": {
     "@erickmerchant/lint": "^4.0.0",

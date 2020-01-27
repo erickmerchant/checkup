@@ -1,8 +1,8 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-npm-audit - no package.json', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-audit.js', {
+test('test lib/check-npm-audit - no package.json', async (t) => {
+  const checkDependencies = proxyquire('../../lib/check-npm-audit.js', {
     execa: {},
     fs: {
       access(file, mode, callback) {
@@ -19,8 +19,8 @@ test('test src/check-npm-audit - no package.json', async (t) => {
   t.deepEqual(results, [])
 })
 
-test('test src/check-npm-audit - no results', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-audit.js', {
+test('test lib/check-npm-audit - no results', async (t) => {
+  const checkDependencies = proxyquire('../../lib/check-npm-audit.js', {
     async execa() {
       return {
         stdout: `{
@@ -51,8 +51,8 @@ test('test src/check-npm-audit - no results', async (t) => {
   t.deepEqual(results, [])
 })
 
-test('test src/check-npm-audit - 1 result', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-audit.js', {
+test('test lib/check-npm-audit - 1 result', async (t) => {
+  const checkDependencies = proxyquire('../../lib/check-npm-audit.js', {
     async execa() {
       return {
         stdout: `{
@@ -83,8 +83,8 @@ test('test src/check-npm-audit - 1 result', async (t) => {
   t.deepEqual(results, ['1 critical vulnerability'])
 })
 
-test('test src/check-npm-audit - 2 results', async (t) => {
-  const checkDependencies = proxyquire('../../src/check-npm-audit.js', {
+test('test lib/check-npm-audit - 2 results', async (t) => {
+  const checkDependencies = proxyquire('../../lib/check-npm-audit.js', {
     async execa() {
       return {
         stdout: `{

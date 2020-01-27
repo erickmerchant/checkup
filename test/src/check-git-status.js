@@ -1,8 +1,8 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-git-status - no results', async (t) => {
-  const checkGitStatus = proxyquire('../../src/check-git-status.js', {
+test('test lib/check-git-status - no results', async (t) => {
+  const checkGitStatus = proxyquire('../../lib/check-git-status.js', {
     async execa() {
       return {
         stdout: '## master...origin/master'
@@ -23,8 +23,8 @@ test('test src/check-git-status - no results', async (t) => {
   t.deepEqual(results, [])
 })
 
-test('test src/check-git-status - results', async (t) => {
-  const checkGitStatus = proxyquire('../../src/check-git-status.js', {
+test('test lib/check-git-status - results', async (t) => {
+  const checkGitStatus = proxyquire('../../lib/check-git-status.js', {
     async execa() {
       return {
         stdout: '## develop...origin/develop\nM  foo'
@@ -45,8 +45,8 @@ test('test src/check-git-status - results', async (t) => {
   t.deepEqual(results, ['not on master', 'working directory unclean'])
 })
 
-test('test src/check-git-status - no .git', async (t) => {
-  const checkGitStatus = proxyquire('../../src/check-git-status.js', {
+test('test lib/check-git-status - no .git', async (t) => {
+  const checkGitStatus = proxyquire('../../lib/check-git-status.js', {
     async execa() {
       return {
         stdout: '## master...origin/master'

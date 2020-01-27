@@ -1,8 +1,8 @@
 const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 
-test('test src/check-npm-tst - no package.json', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst.js', {
+test('test lib/check-npm-tst - no package.json', async (t) => {
+  const npmTest = proxyquire('../../lib/check-npm-tst.js', {
     execa: {},
     fs: {
       access(file, mode, callback) {
@@ -19,8 +19,8 @@ test('test src/check-npm-tst - no package.json', async (t) => {
   t.deepEqual(results, [])
 })
 
-test('test src/check-npm-tst - no results', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst.js', {
+test('test lib/check-npm-tst - no results', async (t) => {
+  const npmTest = proxyquire('../../lib/check-npm-tst.js', {
     async execa() {
       return {}
     },
@@ -39,8 +39,8 @@ test('test src/check-npm-tst - no results', async (t) => {
   t.deepEqual(results, [])
 })
 
-test('test src/check-npm-tst - tests failing', async (t) => {
-  const npmTest = proxyquire('../../src/check-npm-tst.js', {
+test('test lib/check-npm-tst - tests failing', async (t) => {
+  const npmTest = proxyquire('../../lib/check-npm-tst.js', {
     async execa() {
       return {exitCode: 1}
     },

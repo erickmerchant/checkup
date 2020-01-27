@@ -2,20 +2,20 @@ const test = require('tape')
 const proxyquire = require('proxyquire').noPreserveCache()
 const {red, gray, green} = require('kleur')
 
-test('test src/action - zero length results', async (t) => {
+test('test lib/action - zero length results', async (t) => {
   const logged = []
 
   t.plan(1)
 
   await proxyquire('../main.js', {
-    './src/globals.js': {
+    './lib/globals.js': {
       console: {
         log(msg) {
           logged.push(msg)
         }
       }
     },
-    async './src/checks'() {
+    async './lib/checks'() {
       return []
     }
   })({
@@ -27,20 +27,20 @@ test('test src/action - zero length results', async (t) => {
   ])
 })
 
-test('test src/action - non-zero length results', async (t) => {
+test('test lib/action - non-zero length results', async (t) => {
   const logged = []
 
   t.plan(1)
 
   await proxyquire('../main.js', {
-    './src/globals.js': {
+    './lib/globals.js': {
       console: {
         log(msg) {
           logged.push(msg)
         }
       }
     },
-    async './src/checks'() {
+    async './lib/checks'() {
       return ['test']
     }
   })({
