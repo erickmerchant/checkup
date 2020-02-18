@@ -1,7 +1,7 @@
 {
   "name": "@erickmerchant/checkup",
   "version": "12.6.7",
-  "description": "Check multiple projects for various things.",
+  "description": "Check projects for issues.",
   "keywords": [],
   "repository": {
     "type": "git",
