@@ -8,7 +8,6 @@ Essentially it looks at all the directories passed to it and runs a few checks o
 - compares the output of `npm outdated --json` to the package-lock.json versions
 - runs `npm test`
 - runs `git status --porcelain`
-- checks for missing and unused dependencies
 
 ## Usage
 
