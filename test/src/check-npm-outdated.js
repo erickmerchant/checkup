@@ -1,4 +1,4 @@
-const test = require('tape')
+const test = require('ava')
 const proxyquire = require('proxyquire').noPreserveCache().noCallThru()
 
 test('test lib/check-npm-outdated - no package.json', async (t) => {
@@ -11,8 +11,6 @@ test('test lib/check-npm-outdated - no package.json', async (t) => {
       constants: {R_OK: true}
     }
   })
-
-  t.plan(1)
 
   const results = await checkDependencies('test')
 
@@ -40,8 +38,6 @@ test('test lib/check-npm-outdated - no results', async (t) => {
       constants: {R_OK: true}
     }
   })
-
-  t.plan(1)
 
   const results = await checkDependencies('test')
 
@@ -74,8 +70,6 @@ test('test lib/check-npm-outdated - upgrade', async (t) => {
     }
   })
 
-  t.plan(1)
-
   const results = await checkDependencies('test')
 
   t.deepEqual(results, ['upgrade foo'])
@@ -106,8 +100,6 @@ test('test lib/check-npm-outdated - update', async (t) => {
       constants: {R_OK: true}
     }
   })
-
-  t.plan(1)
 
   const results = await checkDependencies('test')
 

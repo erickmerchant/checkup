@@ -1,4 +1,4 @@
-const test = require('tape')
+const test = require('ava')
 const proxyquire = require('proxyquire').noPreserveCache()
 
 test('test lib/check-npm-audit - no package.json', async (t) => {
@@ -11,8 +11,6 @@ test('test lib/check-npm-audit - no package.json', async (t) => {
       constants: {R_OK: true}
     }
   })
-
-  t.plan(1)
 
   const results = await checkDependencies('test')
 
@@ -44,8 +42,6 @@ test('test lib/check-npm-audit - no results', async (t) => {
     }
   })
 
-  t.plan(1)
-
   const results = await checkDependencies('test')
 
   t.deepEqual(results, [])
@@ -76,8 +72,6 @@ test('test lib/check-npm-audit - 1 result', async (t) => {
     }
   })
 
-  t.plan(1)
-
   const results = await checkDependencies('test')
 
   t.deepEqual(results, ['1 critical vulnerability'])
@@ -107,8 +101,6 @@ test('test lib/check-npm-audit - 2 results', async (t) => {
       constants: {R_OK: true}
     }
   })
-
-  t.plan(1)
 
   const results = await checkDependencies('test')
 
